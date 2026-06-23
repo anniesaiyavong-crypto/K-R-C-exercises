@@ -1,5 +1,5 @@
 int main() {
-	const char msg[] = "mello, world\n";
+	const char msg[] = "hello, world\n";
 	__asm__(
 			"mov $1, %%rax\n"
 			"mov $1, %%rdi\n"
