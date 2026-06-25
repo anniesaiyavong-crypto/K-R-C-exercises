@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-#define LOWER 0
-#define UPPER 300
-#define STEP 20
+const int LOWER = 0;
+const int UPPER = 300;
+const int STEP = 20;
 
 
 int main() {
