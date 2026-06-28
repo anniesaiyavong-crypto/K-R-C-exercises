@@ -1,37 +1,24 @@
 #include <stdio.h>
 
+int power(int m, int n);
+
 int main()
 {
-    int c, i, nwhite, nother;
-    int ndigit[10];
+    int i;
 
-    nwhite = nother = 0;
-
-    for (int i = 0; i < 10; ++i)
-        ndigit[i] = 0;
-
-    while ((c = getchar()) != EOF)
+    for (i = 0; i < 10; i++)
     {
-        if (c >= '0' && c <= '9')
-        {
-            ++ndigit[c - '0'];
-        }
-
-        else if (c == ' ' || c == '\n' || c == '\t')
-        {
-            ++nwhite;
-        }
-
-        else
-        {
-            ++nother;
-        }
+        printf("%d %d %d\n", i, power(2, i), power(-3, i));
     }
-
-    printf("digits =");
-    for (i = 0; i < 10; ++i)
+    return 0;
+}
+int power(int base, int n)
     {
-        printf("%d", ndigit[i]);
+        int i, p;  
+         p = 1;
+        for (i = 1; i <= n; i++)
+        {
+            p = p * base;
+        }
+        return p;
     }
-    printf(", white space = %d, other = %d\n", nwhite, nother);
-} 
