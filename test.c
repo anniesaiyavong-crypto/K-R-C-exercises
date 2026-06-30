@@ -24,9 +24,10 @@ int htoi(char s[]) {
 		} else {
 			break;
 		}
-		result = result * 16 + digit_value;
+		result = (result * 16) + digit_value;
 		i++;
 	}
+	return result;
 }
 
 int main() {
