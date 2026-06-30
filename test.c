@@ -1,12 +1,17 @@
 #include <stdio.h>
 
+enum state {
+	real,
+	fake
+};
+
 int main() {
-	unsigned char u_max = 0;
+	int a, b;
+	 a = 2;
+	 b = 3;
 
-	u_max = u_max -1;
-
-	printf("%d\n", u_max);
+	if((a + b) == 5) {
+		printf("%d\n", real);
+	}
 	return 0;
 }
-
-
