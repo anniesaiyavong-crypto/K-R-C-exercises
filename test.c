@@ -1,38 +1,43 @@
 #include <stdio.h>
+// squeeze function
+void sq(char s1[], char s2[]) {
 
-int htoi(char s[]);
+  // i for s1, j for s2, k for the leftover
+  int i, j, k;
 
-int htoi(char s[]) {
-  int i = 0;
-  int result = 0;
-  int digit_value;
-
-  if (s[i] == '0') {
-    i++;
-    if ((s[i] == 'x') || (s[i] == 'X')) {
-      i++;
+  k = 0;
+  //read s1
+  for (i = 0; s1[i] != '\0'; i++) {
+    //read s2
+    for (j = 0; s2[j] != '\0'; j++) {
+      // break after they matched
+     if (s1[i] == s2[j]) {
+        break;
+     }
+    }
+    // if j found \0 its job is done
+    if (s2[j] == '\0') {
+      // push the leftover to s1 and count with k
+      s1[k++] = s1[i];
     }
   }
-  while (s[i] != '\0') {
-    if ((s[i] >= '0') && (s[i] <= '9')) {
-      digit_value = s[i] - '0';
-    } else if ((s[i] >= 'a') && (s[i] <= 'f')) {
-      digit_value = s[i] - 'a' + 10;
-    } else if ((s[i] >= 'A') && (s[i] <= 'F')) {
-      digit_value = s[i] - 'A' + 10;
-    } else {
-      break;
-    }
-    result = (result * 16) + digit_value;
-    i++;
-  }
-  return result;
+  // k is done after \0
+  s1[k] = '\0';
 }
 
+// main function
 int main() {
-  printf("0x1A3 ➔ %d\n", htoi("0x1A3"));
-  printf("0XFF  ➔ %d\n", htoi("0XFF"));
-  printf("f     ➔ %d\n", htoi("f"));
 
-  return 0;
+  // data
+  char text[] = "babcock";
+  char blacklist[] = "bc";
+
+  // call the function
+  sq(text, blacklist);
+
+  // print
+  printf("result: %s\n", text);
 }
+
+// result is aok
+
