@@ -1,12 +1,20 @@
 #include <stdio.h>
-// r = reverse
-unsigned roll(unsigned int x, int n) {
- return (x >> n) | (x << ((sizeof(x) * 8) - n) );
+
+
+char* lower(char c[]) {
+  int i;
+  for (i = 0; c[i] != '\0'; i++) {
+    ( c[i] >= 'A' && c[i] <= 'Z') ? c[i] += 32 : c[i];
+  }
+  return c;
 }
 
+
 int main() {
-  unsigned int x = 0xFF;
-  int p = 4;
-  int n = 3;
-  printf("%u\n", roll(n, x));
+  char c[] = "CAT";
+
+  printf("%s\n",lower(c));
+  return 0;
 }
+
+
