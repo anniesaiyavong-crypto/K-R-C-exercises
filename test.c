@@ -1,19 +1,19 @@
 #include <stdio.h>
 
 
-int bitcount(unsigned x) {
-  int b;
-
-  for (b = 0; x != 0; b++) {
-    x &= (x - 1);
+char* lower(char c[]) {
+  int i;
+  for (i = 0; c[i] != '\0'; i++) {
+    ( c[i] >= 'A' && c[i] <= 'Z') ? c[i] += 32 : c[i];
   }
-  return b;
+  return c;
 }
 
-int main() {
-  unsigned int x = 10;
 
-  printf("%d\n",bitcount(x));
+int main() {
+  char c[] = "CAT";
+
+  printf("%s\n",lower(c));
   return 0;
 }
 
