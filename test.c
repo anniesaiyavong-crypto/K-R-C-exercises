@@ -1,12 +1,12 @@
 #include <stdio.h>
-
-unsigned setbit(unsigned int x, int p, int n) {
- return x ^ (~(~0 << n) << (p + 1 - n));
+// r = reverse
+unsigned roll(unsigned int x, int n) {
+ return (x >> n) | (x << ((sizeof(x) * 8) - n) );
 }
 
 int main() {
   unsigned int x = 0xFF;
   int p = 4;
   int n = 3;
-  printf("%d\n", setbit(n, x, p));
+  printf("%u\n", roll(n, x));
 }
