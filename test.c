@@ -1,37 +1,48 @@
 #include <stdio.h>
 
-int binsearch(int x, int v[], int n) {
-  int low, high, mid;
-  low = 0;
-  high = n - 1;
+void escape(char string[], char text[]);
 
-  while (low < high) {
-    mid = (low + high) / 2;
-    if (x <= v[mid]) {
-      high = mid;
-    }
-    else
-      low = mid + 1;
-  }
-  return (x == v[low]) ? low : -1;
-}
 int main() {
+  char cat[] = "hello \n \t";
+  char esc[100] = "";
 
-    int my_array[] = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
-    int total_elements = sizeof(my_array) / sizeof(my_array[0]);
-    int target = 14;
+  escape(esc, cat);
 
-
-    int result_index = binsearch(target, my_array, total_elements);
-
-
-    if (result_index != -1) {
-        printf("%d (Index): %d\n", target, result_index);
-    } else {
-        printf("%d did not exist in \n", target);
-    }
-
+  printf("%s\n", esc);
     return 0;
 }
+
+void escape(char s[], char t[]) {
+  int i, j;
+  j = 0;
+  char c;
+
+  for (i = 0; t[i] != '\0'; i++) {
+   c = t[i];
+
+   switch (c) {
+     case '\n' :
+       s[j++] = '\\';
+       s[j++] = 'n';
+        break;
+     case '\t' :
+       s[j++] = '\\';
+       s[j++] = 't';
+       break;
+     default :
+       s[j++] = c;
+       break;
+    }
+  }
+  s[j] = '\0';
+}
+
+
+
+
+
+
+
+
 
 
