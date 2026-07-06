@@ -8,39 +8,39 @@
 #define END '\0'
 // function prototypes
 void reverse(char text[]);
-void itoa(int n, char s[]);
+void base_conversion(int n, char s[], int b);
 
 
 
 // main
 int main() {
-  int n = -2147483648;
+  int n = 255;
+  int b = 16;
   char s[100] = "";
-  itoa(n, s);
 
+  base_conversion(n, s, b);
   printf(ST NL, s);
+
 
   return 0;
 }
 
 
-// int to string
-void itoa(int n, char s[]) {
-  int i, sign;
-  sign = n;
-  i = 0;
-
-
+// base_conversion function
+void base_conversion(int n, char s[], int b) {
+  int i = 0;
+  int sign = n;
+  char digits[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 
   do {
-    int x = n % 10;
-    if (x < 0)
-      s[i++] = '0' - x;
-    else
-      s[i++] = '0' + x;
+    int rem = n % b;
+    if (rem < 0)
+      rem = -rem;
+    s[i++] = digits[rem];
+    n /= b;
   }
 
-  while ((n /= 10) != 0);
+  while (n != 0);
   if (sign < 0) {
     s[i++] = '-';
   }
