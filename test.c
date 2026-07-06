@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-
+// personal preference shortcut
 #define DE "%d"
 #define ST "%s"
 #define NL "\n"
@@ -14,7 +14,7 @@ void itoa(int n, char s[]);
 
 // main
 int main() {
-  int n = 189002;
+  int n = -2147483648;
   char s[100] = "";
   itoa(n, s);
 
@@ -26,17 +26,22 @@ int main() {
 
 // int to string
 void itoa(int n, char s[]) {
-  int i, sigh;
-  if ((sigh = n) < 0) {
-    n = -n;
-  }
+  int i, sign;
+  sign = n;
   i = 0;
 
+
+
   do {
-    s[i++] = n % 10 + '0';
+    int x = n % 10;
+    if (x < 0)
+      s[i++] = '0' - x;
+    else
+      s[i++] = '0' + x;
   }
-  while ((n /= 10) > 0);
-  if (sigh < 0) {
+
+  while ((n /= 10) != 0);
+  if (sign < 0) {
     s[i++] = '-';
   }
   s[i] = END;
