@@ -5,66 +5,58 @@
 #define DE "%d"
 #define ST "%s"
 #define NL "\n"
-#define END '\0'
-// function prototypes
-void reverse(char text[]);
-void itoa(int n, char s[], int w);
+#define NLINE '\n'
+#define EOS '\0'
 
+#define MAXLINE 1000
+// function prototypes
+int get_line(char line[], int max);
+int strindex(char source[], char searchfor[]);
 
 
 // main
 int main() {
-  int n = -123;
-  char s[100] = "";
-  int width = 10;
-  itoa(n, s, width);
+  char pattern[] = "a";
+  char line[MAXLINE];
+  int found = 0;
 
-  printf(ST NL, s);
-
-  return 0;
+  while (get_line(line, MAXLINE) > 0)
+    if (strindex(line, pattern) >= 0) {
+      printf(ST, line);
+      found++;
+    }
+  return found;
 }
-
-
-// int to string
-void itoa(int n, char s[], int w) {
-  int i, sign;
-  sign = n;
+// get_line
+int get_line(char s[], int limit) {
+  int c, i;
   i = 0;
-  int le;
 
-
-
-  do {
-    int rem = n % 10;
-    if (rem < 0)
-      s[i++] = '0' - rem;
-    else
-      s[i++] = '0' + rem;
-    n /= 10;
+  while (--limit > 0 && (c = getchar()) != EOF && c != NLINE) {
+    s[i++] = c;
   }
-
-  while (n != 0);
-  if (sign < 0) {
-    s[i++] = '-';
+  if (c == NLINE) {
+    s[i++] = c;
   }
-
-  while (i < w) {
-    s[i++] = ' ';
-  }
-  s[i] = END;
-
-  reverse(s);
-
+  s[i] = EOS;
+  return i;
 }
-// reverse
-void reverse(char s[]) {
-  int i, j;
-  char c;
+// strindex
+int strindex(char s[], char t[]) {
+  int i, j, k;
+  int rightmost = -1;
 
-  for (i = 0, j = strlen(s) - 1;  i < j; i++, j--) {
-    c = s[i];
-    s[i] = s[j];
-    s[j] = c;
+  for (i = 0; s[i] != EOS; i++) {
+    for (j = i, k = 0; t[k] != EOS && s[j] == t[k]; j++, k++) {
+    }
+    if (k > 0 && t[k] == EOS) {
+      rightmost = i;
+    }
   }
-
+      return rightmost;
 }
+
+
+
+
+
