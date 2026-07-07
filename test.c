@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-
+#include <ctype.h>
 // personal preference shortcut
 #define DE "%d"
 #define ST "%s"
@@ -8,54 +8,39 @@
 #define NLINE '\n'
 #define EOS '\0'
 
-#define MAXLINE 1000
 // function prototypes
-int get_line(char line[], int max);
-int strindex(char source[], char searchfor[]);
-
+double atofl(char s[]);
 
 // main
 int main() {
-  char pattern[] = "a";
-  char line[MAXLINE];
-  int found = 0;
+  char s[100] = "123";
 
-  while (get_line(line, MAXLINE) > 0)
-    if (strindex(line, pattern) >= 0) {
-      printf(ST, line);
-      found++;
-    }
-  return found;
+  printf("%f" NL, atofl(s));
+  return 0;
 }
-// get_line
-int get_line(char s[], int limit) {
-  int c, i;
-  i = 0;
+double atofl(char s[]) {
+  double val, power;
+  int i, sign;
 
-  while (--limit > 0 && (c = getchar()) != EOF && c != NLINE) {
-    s[i++] = c;
+  for (i = 0; isspace(s[i]); i++) {
+    ;
   }
-  if (c == NLINE) {
-    s[i++] = c;
+  sign = (s[i] == '-') ? -1 : 1;
+  if (s[i] == '+' || s[i] == '-') {
+    i++;
   }
-  s[i] = EOS;
-  return i;
+  for (val = 0.0; isdigit(s[i]); i++) {
+    val = 10.0 * val + (s[i] - '0');
+  }
+  if (s[i] == '.') {
+    i++;
+  }
+  for (power = 1.0; isdigit(s[i]); i++) {
+    val = 10.0 * val + (s[i] = '0');
+    power *= 10;
+  }
+  return sign * val / power;
 }
-// strindex
-int strindex(char s[], char t[]) {
-  int i, j, k;
-  int rightmost = -1;
-
-  for (i = 0; s[i] != EOS; i++) {
-    for (j = i, k = 0; t[k] != EOS && s[j] == t[k]; j++, k++) {
-    }
-    if (k > 0 && t[k] == EOS) {
-      rightmost = i;
-    }
-  }
-      return rightmost;
-}
-
 
 
 
