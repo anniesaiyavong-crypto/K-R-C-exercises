@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 // personal preference shortcut
 #define DE "%d"
 #define ST "%s"
@@ -8,68 +9,112 @@
 #define NLINE '\n'
 #define EOS '\0'
 
+#define MAXOP 100
+#define NUMBER '0'
+
 // function prototypes
-double atofl(char s[]);
+int getop(char []);
+void push(double);
+double pop(void);
 
 // main
+// reverse Polsih Calculator
 int main() {
-  char s[100] = "123e10";
+  int type;
+  double op2;
+  char s[MAXOP];
 
-  printf("%f" NL, atofl(s));
+  while ((type = getop(s)) != EOF) {
+    switch (type) {
+      case NUMBER:
+        push(atof(s));
+        break;
+      case '+':
+        push(pop() + pop());
+        break;
+      case '*':
+        push(pop() * pop());
+        break;
+      case '-':
+        op2 = pop();
+        push(pop() - op2);
+        break;
+      case '/':
+        op2 = pop();
+        if (op2 != 0.0) {
+          push(pop() / op2);
+        }
+        else {
+          printf("Cannot divide 0"NL);
+        }
+        break;
+      case NLINE:
+        printf("\t%.8g"NL, pop());
+        break;
+      default:
+        printf("Unknow command"NL);
+        break;
+    }
+  }
   return 0;
 }
-// ASCII to Float
-double atofl(char s[]) {
-  double val, power;
-  int i, sign, expo_sign, expo_val;
 
 
-  // clear the space
-  for (i = 0; isspace(s[i]); i++) {
+#define MAXVAL 100
+
+int sp = 0;
+double val[MAXVAL];
+
+void push(double f) {
+  if (sp < MAXVAL) {
+    val[sp++] = f;
+  }
+  else {
+    printf("full, cant push %g"NL);
+  }
+}
+
+double pop(void) {
+  if (sp > 0) {
+    return val[sp--];
+  }
+  else {
+    printf("Error, empty stack"NL);
+    return 0.0;
+  }
+}
+
+int getch(void);
+void ungetch(int);
+
+int getop(char s[]) {
+  int i, c;
+
+  while ((s[0] = c = getch()) == ' ' || c == '\t') {
     ;
   }
-  // check sign
-  sign = (s[i] == '-') ? -1 : 1;
-  if (s[i] == '+' || s[i] == '-') {
-    i++;
-  }
-
-  for (val = 0.0; isdigit(s[i]); i++) {
-    val = 10.0 * val + (s[i] - '0');
-  }
-
-  if (s[i] == '.') {
-    i++;
-  }
-  for (power = 1.0; isdigit(s[i]); i++) {
-    val = 10.0 * val + (s[i] = '0');
-    power *= 10;
-  }
-  val = sign * val / power;
-
-  if (s[i] == 'e' || s[i] == 'E') {
-    i++;
-
-    expo_sign = (s[i] == '-') ? -1 : 1;
-
-    if (s[i] == '+' || s[i] == '-') {
-      i++;
+    s[1] = EOS;
+    if (!isdigit(c) && c != '.') {
+      return c;
     }
-    for (expo_val = 0; isdigit(s[i]); i++) {
-      expo_val = 10 * expo_val + (s[i] - '0');
-    }
-
-    for (int k = 0; k < expo_val; k++) {
-      if (expo_sign == -1) {
-        val /= 10.0;
+    i++;
+    if (isdigit(c)) {
+      while (isdigit(s[i++] = c = getch())) {
+        ;
+       }
       }
-      else {
-        val *= 10;
+    if (c == '.') {
+      while (isdigit(s[i++] = c = getch())) {
+        ;
       }
     }
-  }
-  return val;
+    s[i] = EOS;
+    if (c != EOF) {
+      ungetch(c);
+    }
+    return NUMBER;
 }
+
 
 
 
