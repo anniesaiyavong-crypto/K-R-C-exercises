@@ -70,7 +70,7 @@ void push(double f) {
     val[sp++] = f;
   }
   else {
-    printf("full, cant push %g"NL);
+    printf("full, cant push %g"NL, f);
   }
 }
 
@@ -114,6 +114,37 @@ int getop(char s[]) {
     }
     return NUMBER;
 }
+
+#define BUFSIZE 100
+
+
+
+
+char buf[BUFSIZ];
+int bufp;
+
+int getcha(void) {
+  return (bufp > 0) ? buf[--bufp] : getchar();
+}
+void ungetch(int c) {
+  if (bufp >= BUFSIZE) {
+    printf("ungetch: too many characters"NL);
+  }
+  else {
+    buf[bufp++] = c;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
