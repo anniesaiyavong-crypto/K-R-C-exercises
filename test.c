@@ -16,7 +16,8 @@
 int getop(char []);
 void push(double);
 double pop(void);
-
+int getch(void);
+void ungetch(int);
 // main
 // reverse Polsih Calculator
 int main() {
@@ -84,8 +85,6 @@ double pop(void) {
   }
 }
 
-int getch(void);
-void ungetch(int);
 
 int getop(char s[]) {
   int i, c;
@@ -123,7 +122,7 @@ int getop(char s[]) {
 char buf[BUFSIZ];
 int bufp;
 
-int getcha(void) {
+int getch(void) {
   return (bufp > 0) ? buf[--bufp] : getchar();
 }
 void ungetch(int c) {
