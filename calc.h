@@ -1,0 +1,24 @@
+#ifndef CALC_H
+#define CALC_H
+
+// personal preference short
+#define DE "%d"
+#define ST "%s"
+#define NL "\n"
+#define NLINE '\n'
+#define EOS '\0'
+//
+#define NUMBER '0'
+
+
+
+
+// functions
+int getop(char []);
+void push(double);
+double pop(void);
+int getch(void);
+void ungetch(int);
+
+
+#endif

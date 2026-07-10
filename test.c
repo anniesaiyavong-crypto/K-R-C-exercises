@@ -2,24 +2,12 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-// personal preference shortcut
-#define DE "%d"
-#define ST "%s"
-#define NL "\n"
-#define NLINE '\n'
-#define EOS '\0'
+#include "calc.h"
+
 
 #define MAXOP 100
-#define NUMBER '0'
 
-// function prototypes
-int getop(char []);
-void push(double);
-double pop(void);
-int getch(void);
-void ungetch(int);
-// main
-// reverse Polsih Calculator
+//main
 int main() {
   int type;
   double op2;
@@ -61,78 +49,10 @@ int main() {
 }
 
 
-#define MAXVAL 100
-
-int sp = 0;
-double val[MAXVAL];
-
-void push(double f) {
-  if (sp < MAXVAL) {
-    val[sp++] = f;
-  }
-  else {
-    printf("full, cant push %g"NL, f);
-  }
-}
-
-double pop(void) {
-  if (sp > 0) {
-    return val[sp--];
-  }
-  else {
-    printf("Error, empty stack"NL);
-    return 0.0;
-  }
-}
-
-
-int getop(char s[]) {
-  int i, c;
-
-  while ((s[0] = c = getch()) == ' ' || c == '\t') {
-    ;
-  }
-    s[1] = EOS;
-    if (!isdigit(c) && c != '.') {
-      return c;
-    }
-    i++;
-    if (isdigit(c)) {
-      while (isdigit(s[i++] = c = getch())) {
-        ;
-       }
-      }
-    if (c == '.') {
-      while (isdigit(s[i++] = c = getch())) {
-        ;
-      }
-    }
-    s[i] = EOS;
-    if (c != EOF) {
-      ungetch(c);
-    }
-    return NUMBER;
-}
-
-#define BUFSIZE 100
 
 
 
 
-char buf[BUFSIZ];
-int bufp;
-
-int getch(void) {
-  return (bufp > 0) ? buf[--bufp] : getchar();
-}
-void ungetch(int c) {
-  if (bufp >= BUFSIZE) {
-    printf("ungetch: too many characters"NL);
-  }
-  else {
-    buf[bufp++] = c;
-  }
-}
 
 
 
