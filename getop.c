@@ -5,7 +5,7 @@
 
 int getop(char s[]) {
     int i, c;
-
+    i = 0;
     while ((s[0] = c = getch()) == ' ' || c == '\t') {
         ;
     }
