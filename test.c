@@ -12,6 +12,8 @@ int main() {
   int type;
   double op2;
   char s[MAXOP];
+  int intop1, intop2;
+  intop1 = intop2 = 0;
 
   while ((type = getop(s)) != EOF) {
     switch (type) {
@@ -21,13 +23,16 @@ int main() {
       case '+':
         push(pop() + pop());
         break;
+
       case '*':
         push(pop() * pop());
         break;
+
       case '-':
         op2 = pop();
         push(pop() - op2);
         break;
+
       case '/':
         op2 = pop();
         if (op2 != 0.0) {
@@ -37,6 +42,18 @@ int main() {
           printf("Cannot divide 0"NL);
         }
         break;
+
+      case '%':
+        intop1 = pop();
+        intop2 = pop();
+        if (intop1 != 0) {
+        push(intop2 % intop1);
+        }
+        else {
+          printf("error: zero devisor"NL);
+        }
+        break;
+
       case NLINE:
         printf("\t%.8g"NL, pop());
         break;
