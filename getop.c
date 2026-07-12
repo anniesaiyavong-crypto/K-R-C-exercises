@@ -4,16 +4,34 @@
 
 
 int getop(char s[]) {
-    int i, c;
+    int i, c, next;
     i = 0;
     while ((s[0] = c = getch()) == ' ' || c == '\t') {
         ;
     }
     s[1] = EOS;
-    if (!isdigit(c) && c != '.') {
+
+    if (c == '-') {
+        next = getch();
+        if (isdigit(next) || next == '.') {
+            s[1] = c = next;
+            i = 2;
+        }
+        else {
+            if (next != EOS) {
+                ungetch(next);
+            }
+            return '-';
+        }
+    }
+
+    else if (!isdigit(c) && c != '.') {
         return c;
     }
-    i++;
+    else {
+        i = 1;
+    }
+
     if (isdigit(c)) {
         while (isdigit(s[i++] = c = getch())) {
             ;
