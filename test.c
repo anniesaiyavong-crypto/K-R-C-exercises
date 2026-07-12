@@ -13,7 +13,6 @@ int main() {
   double op2;
   char s[MAXOP];
   int intop1, intop2;
-  intop1 = intop2 = 0;
 
   while ((type = getop(s)) != EOF) {
     switch (type) {

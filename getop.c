@@ -11,6 +11,7 @@ int getop(char s[]) {
     }
     s[1] = EOS;
 
+    //For negative number
     if (c == '-') {
         next = getch();
         if (isdigit(next) || next == '.') {
