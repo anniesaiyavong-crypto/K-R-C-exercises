@@ -54,8 +54,14 @@ int main() {
         break;
 
       case NLINE:
-        printf("\t%.8g"NL, pop());
+        if (sp > 0) {
+          printf("\t%.8g"NL, val[sp-1]);
+        }
+        else {
+          printf("Error"NL);
+        }
         break;
+
       default:
         printf("Unknow command"NL);
         break;

@@ -10,7 +10,9 @@
 //
 #define NUMBER '0'
 
-
+// variable
+extern int sp;
+extern double val[];
 
 
 // functions
