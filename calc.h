@@ -14,7 +14,6 @@
 extern int sp;
 extern double val[];
 
-
 // functions
 int getop(char []);
 void push(double);

@@ -6,10 +6,19 @@
 int getop(char s[]) {
     int i, c, next;
     i = 0;
+    // save the first char into s[0] and c whie skipping spaces
     while ((s[0] = c = getch()) == ' ' || c == '\t') {
         ;
     }
+
     s[1] = EOS;
+
+    // control operator
+    if (isalpha(c)) {
+        return c;
+    }
+
+
 
     //For negative number
     if (c == '-') {
