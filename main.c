@@ -47,12 +47,22 @@ int main() {
         printf("error: zero devisor" NL);
       }
       break;
+      // control command
+    case 'c':
+    case 'C':
+      clear();
+
+      //skipping \n
+      int garbage;
+      while ((garbage = getch()) != '\n' && garbage != EOF) {
+      ;
+      }
 
     case NLINE:
       if (sp > 0) {
         printf("\t%.8g" NL, val[sp - 1]);
       } else {
-        printf("Error" NL);
+        printf("empty stack" NL);
       }
       break;
 

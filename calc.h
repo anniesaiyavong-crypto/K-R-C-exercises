@@ -20,6 +20,7 @@ void push(double);
 double pop(void);
 int getch(void);
 void ungetch(int);
+void clear(void);
 
 
 #endif

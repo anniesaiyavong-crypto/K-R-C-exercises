@@ -24,4 +24,9 @@ double pop(void) {
         return 0.0;
     }
 }
+void clear(void) {
+    if (sp > 0) {
+        val[--sp] = 0;
+    }
+}
 

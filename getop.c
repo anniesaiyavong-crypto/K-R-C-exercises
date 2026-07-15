@@ -15,9 +15,11 @@ int getop(char s[]) {
 
     // control operator
     if (isalpha(c)) {
-        return c;
+        next = getch();
+        if (next != '\n') {
+            return c;
+        }
     }
-
 
 
     //For negative number
