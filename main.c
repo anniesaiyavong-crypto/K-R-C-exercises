@@ -51,12 +51,14 @@ int main() {
     case 'c':
     case 'C':
       clear();
-
-      //skipping \n
+      bufp = 0;
       int garbage;
       while ((garbage = getch()) != '\n' && garbage != EOF) {
-      ;
+        ;
       }
+
+        break;
+
 
     case NLINE:
       if (sp > 0) {

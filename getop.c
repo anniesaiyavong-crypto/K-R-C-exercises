@@ -15,10 +15,7 @@ int getop(char s[]) {
 
     // control operator
     if (isalpha(c)) {
-        next = getch();
-        if (next != '\n') {
-            return c;
-        }
+        return c;
     }
 
 

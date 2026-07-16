@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "calc.h"
+#include <string.h>
 
 #define MAXVAL 100
 
@@ -20,13 +21,13 @@ double pop(void) {
         return val[--sp];
     }
     else {
-        printf("Error, empty stack"NL);
         return 0.0;
     }
 }
 void clear(void) {
     if (sp > 0) {
-        val[--sp] = 0;
+        memset(val, '\0', sizeof(val));
+        sp = 0;
     }
 }
 

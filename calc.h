@@ -13,6 +13,7 @@
 // variable
 extern int sp;
 extern double val[];
+extern int bufp;
 
 // functions
 int getop(char []);
