@@ -16,12 +16,16 @@ extern double val[];
 extern int bufp;
 
 // functions
+// get operators
 int getop(char []);
-void push(double);
-double pop(void);
+//buffer
 int getch(void);
 void ungetch(int);
+//stack
+void push(double);
+double pop(void);
 void clear(void);
 void duplicate(void);
+void swap(void);
 
 #endif

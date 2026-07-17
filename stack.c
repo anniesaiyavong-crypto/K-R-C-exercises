@@ -41,5 +41,12 @@ void duplicate(void) {
 }
 // swap the last 2 position function
 void swap(void) {
-
+    if (sp > 1) {
+        double t = val[sp - 1];
+        val[sp - 1] = val[sp - 2];
+        val[sp - 2] = t;
+    }
+    else {
+        printf("not enough number to swap"NL);
+    }
 }

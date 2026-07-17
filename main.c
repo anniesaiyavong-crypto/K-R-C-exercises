@@ -67,7 +67,8 @@ int main() {
       // swap
     case 's':
     case 'S':
-
+      swap();
+      break;
     case NLINE:
       if (sp > 0) {
         printf("\t%.8g" NL, val[sp - 1]);
