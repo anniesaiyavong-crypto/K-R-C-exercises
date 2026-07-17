@@ -24,10 +24,22 @@ double pop(void) {
         return 0.0;
     }
 }
+
+// clear stack function
 void clear(void) {
     if (sp > 0) {
         memset(val, '\0', sizeof(val));
         sp = 0;
     }
 }
+// duplicate the top stack function
+void duplicate(void) {
+    if (sp > 0) {
+        double dupe = val[sp-1];
+        push(dupe);
+    }
+}
+// swap the last 2 position function
+void swap(void) {
 
+}

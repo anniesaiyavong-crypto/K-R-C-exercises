@@ -48,6 +48,7 @@ int main() {
       }
       break;
       // control command
+      // clear
     case 'c':
     case 'C':
       clear();
@@ -57,8 +58,15 @@ int main() {
         ;
       }
 
-        break;
-
+      break;
+      // duplicate
+    case 'd':
+    case 'D':
+      duplicate();
+      break;
+      // swap
+    case 's':
+    case 'S':
 
     case NLINE:
       if (sp > 0) {

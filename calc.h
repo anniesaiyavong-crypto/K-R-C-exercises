@@ -22,6 +22,6 @@ double pop(void);
 int getch(void);
 void ungetch(int);
 void clear(void);
-
+void duplicate(void);
 
 #endif
