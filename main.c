@@ -57,7 +57,6 @@ int main() {
       while ((garbage = getch()) != '\n' && garbage != EOF) {
         ;
       }
-
       break;
       // duplicate
     case 'd':
@@ -69,6 +68,15 @@ int main() {
     case 'S':
       swap();
       break;
+      // check the whole stack
+    case 'a':
+    case 'A':
+      check_stack();
+      while ((garbage = getch()) != '\n' && garbage != EOF) {
+       ;
+      }
+      break;
+
     case NLINE:
       if (sp > 0) {
         printf("\t%.8g" NL, val[sp - 1]);

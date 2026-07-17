@@ -27,5 +27,5 @@ double pop(void);
 void clear(void);
 void duplicate(void);
 void swap(void);
-
+void check_stack(void);
 #endif

@@ -50,3 +50,19 @@ void swap(void) {
         printf("not enough number to swap"NL);
     }
 }
+// print all number in stack (a)
+void check_stack(void) {
+    printf("stack:");
+
+    if (sp == 0) {
+        printf("empty"NL);
+        return;
+    }
+    for (int i = 0; i < sp; i++) {
+        printf("%g ", val[i]);
+    }
+    printf(NL);
+}
+
+
+
