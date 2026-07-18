@@ -13,12 +13,26 @@ int getop(char s[]) {
 
     s[1] = EOS;
 
-    // control operator
-    if (isalpha(c)) {
+    if (!isdigit(c) && c != '.' && !isalpha(c)) {
         return c;
     }
+    i = 0;
 
+    if (isalpha(c)) {
+        while (isalpha(s[++i] = c = getch()))
+            ;
+        s[i] = '\0';
 
+        if (c != EOF) {
+            ungetch(c);
+        }
+
+        if (s[1] == '\0') {
+            return s[0];
+        }
+
+        return MATH;
+    }
     //For negative number
     if (c == '-') {
         next = getch();

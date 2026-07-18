@@ -1,7 +1,8 @@
 #include "calc.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <math.h>
+#include <string.h>
 #define MAXOP 100
 
 // main
@@ -16,6 +17,21 @@ int main() {
     case NUMBER:
       push(atof(s));
       break;
+    // math function
+    case MATH:
+      if (strcmp(s, "sin") == 0) {
+        push(sin(pop()));
+      }
+      else if (strcmp(s, "exp") == 0) {
+        push(exp(pop()));
+      }
+      else if (strcmp(s, "pow") == 0) {
+        op2 = pop();
+        push(pow(pop(), op2));
+      }
+      else {
+        printf("unknow function %s"NL, s);
+      }
     case '+':
       push(pop() + pop());
       break;

@@ -7,14 +7,13 @@
 #define NL "\n"
 #define NLINE '\n'
 #define EOS '\0'
-//
+// token
 #define NUMBER '0'
-
+#define MATH 'n'
 // variable
 extern int sp;
 extern double val[];
 extern int bufp;
-
 // functions
 // get operators
 int getop(char []);
