@@ -10,6 +10,7 @@
 // token
 #define NUMBER '0'
 #define MATH 'n'
+#define VAR 'v'
 // variable
 extern int sp;
 extern double val[];

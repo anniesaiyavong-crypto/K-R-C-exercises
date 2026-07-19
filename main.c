@@ -11,13 +11,15 @@ int main() {
   double op2;
   char s[MAXOP];
   int intop1, intop2;
+  double variable[26];
+  int var_i;
 
   while ((type = getop(s)) != EOF) {
     switch (type) {
     case NUMBER:
       push(atof(s));
       break;
-    // math function
+    // math functions
     case MATH:
       if (strcmp(s, "sin") == 0) {
         push(sin(pop()));
@@ -32,6 +34,25 @@ int main() {
       else {
         printf("unknow function %s"NL, s);
       }
+      break;
+    // assign variable
+    case VAR:
+      var_i = s[0] - 'A';
+      push(variable[var_i]);
+      break;
+
+    case '=':
+      pop();
+      if (sp > 0) {
+        double val = pop();
+        variable[var_i] = val;
+        push(val);
+      }
+      else {
+        printf("cant assign"NL);
+      }
+      break;
+    // math operators
     case '+':
       push(pop() + pop());
       break;
@@ -92,7 +113,7 @@ int main() {
        ;
       }
       break;
-
+      // Enter
     case NLINE:
       if (sp > 0) {
         printf("\t%.8g" NL, val[sp - 1]);

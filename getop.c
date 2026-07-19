@@ -13,6 +13,21 @@ int getop(char s[]) {
 
     s[1] = EOS;
 
+    //For negative number
+    if (c == '-') {
+        next = getch();
+        if (isdigit(next) || next == '.') {
+            s[0] = '-';
+            c = next;
+        }
+        else {
+            if (next != EOS) {
+                ungetch(next);
+            }
+            return '-';
+        }
+    }
+
     if (!isdigit(c) && c != '.' && !isalpha(c)) {
         return c;
     }
@@ -26,6 +41,9 @@ int getop(char s[]) {
         if (c != EOF) {
             ungetch(c);
         }
+    if (s[1] == EOS && isupper(s[0])) {
+        return VAR;
+        }
 
         if (s[1] == '\0') {
             return s[0];
@@ -33,41 +51,29 @@ int getop(char s[]) {
 
         return MATH;
     }
-    //For negative number
-    if (c == '-') {
-        next = getch();
-        if (isdigit(next) || next == '.') {
-            s[1] = c = next;
-            i = 2;
-        }
-        else {
-            if (next != EOS) {
-                ungetch(next);
-            }
-            return '-';
-        }
-    }
 
     else if (!isdigit(c) && c != '.') {
         return c;
     }
     else {
-        i = 1;
+        i = (s[0] == '-') ? 1 : 0;
+    }
+    s[i] = c;
+    while (isdigit(s[++i] = c = getch()))
+        ;
+
+    if (c == '.') {
+        while (isdigit(s[++i] = c = getch()))
+            ;
     }
 
-    if (isdigit(c)) {
-        while (isdigit(s[i++] = c = getch())) {
-            ;
-        }
-    }
-    if (c == '.') {
-        while (isdigit(s[i++] = c = getch())) {
-            ;
-        }
-    }
-    s[i] = EOS;
+
+    s[i] = '\0';
+
     if (c != EOF) {
         ungetch(c);
     }
+
     return NUMBER;
 }
+
