@@ -13,6 +13,7 @@ int main() {
   int intop1, intop2;
   double variable[26];
   int var_i;
+  double last_value = 0.0;
 
   while ((type = getop(s)) != EOF) {
     switch (type) {
@@ -37,8 +38,12 @@ int main() {
       break;
     // assign variable
     case VAR:
+      if (s[0] == 'V') {
+        push(last_value);
+      } else {
       var_i = s[0] - 'A';
       push(variable[var_i]);
+      }
       break;
 
     case '=':
@@ -116,6 +121,8 @@ int main() {
       // Enter
     case NLINE:
       if (sp > 0) {
+        last_value = pop();
+        push(last_value);
         printf("\t%.8g" NL, val[sp - 1]);
       } else {
         printf("empty stack" NL);
