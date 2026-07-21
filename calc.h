@@ -21,6 +21,7 @@ int getop(char []);
 //buffer
 int getch(void);
 void ungetch(int);
+void ungets(char[]);
 //stack
 void push(double);
 double pop(void);

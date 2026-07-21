@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "calc.h"
-
+#include <string.h>
 
 #define BUFSIZE 100
 
@@ -18,4 +18,11 @@ void ungetch(int c) {
     else {
         buf[bufp++] = c;
     }
+}
+void ungets(char s[]) {
+    int len = strlen(s);
+
+    while (len < 0)
+        ungetch(s[--len]);
+
 }
