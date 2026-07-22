@@ -5,18 +5,27 @@
 #define BUFSIZE 100
 
 
-char buf[BUFSIZE];
-int bufp;
+static int buf = EOF;
 
 int getch(void) {
-    return (bufp > 0) ? buf[--bufp] : getchar();
-}
-void ungetch(int c) {
-    if (bufp >= BUFSIZE) {
-        printf("ungetch: too many characters"NL);
+    int c;
+
+    if (buf != EOF) {
+        c = buf;
+        buf = EOF;
     }
     else {
-        buf[bufp++] = c;
+        c = getchar();
+    }
+    return c;
+}
+
+void ungetch(int c) {
+    if (buf != EOF) {
+        printf("ungetch: too many cahr");
+    }
+    else {
+        buf = c;
     }
 }
 void ungets(char s[]) {
@@ -25,4 +34,8 @@ void ungets(char s[]) {
     while (len < 0)
         ungetch(s[--len]);
 
+}
+
+void clear_buf(void) {
+    buf = EOF;
 }

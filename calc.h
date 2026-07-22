@@ -14,7 +14,6 @@
 // variable
 extern int sp;
 extern double val[];
-extern int bufp;
 // functions
 // get operators
 int getop(char []);
@@ -22,6 +21,7 @@ int getop(char []);
 int getch(void);
 void ungetch(int);
 void ungets(char[]);
+void clear_buf(void);
 //stack
 void push(double);
 double pop(void);
