@@ -35,7 +35,10 @@ void ungets(char s[]) {
         ungetch(s[--len]);
 
 }
-
-void clear_buf(void) {
+// clear stack function
+void clear(void) {
     buf = EOF;
+    if (sp > 0) {
+        sp = 0;
+}
 }

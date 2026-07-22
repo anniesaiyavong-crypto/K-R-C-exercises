@@ -21,11 +21,10 @@ int getop(char []);
 int getch(void);
 void ungetch(int);
 void ungets(char[]);
-void clear_buf(void);
+void clear(void);
 //stack
 void push(double);
 double pop(void);
-void clear(void);
 void duplicate(void);
 void swap(void);
 void check_stack(void);

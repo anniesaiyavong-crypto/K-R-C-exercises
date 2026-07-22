@@ -94,7 +94,6 @@ int main() {
     case 'c':
     case 'C':
       clear();
-      clear_buf();
       int garbage;
       while ((garbage = getch()) != '\n' && garbage != EOF) {
         ;
