@@ -5,14 +5,14 @@
 #define BUFSIZE 100
 
 
-static int buf = EOF;
-
+static int buf = 0;
+static int buf_got_char = 0;
 int getch(void) {
     int c;
 
-    if (buf != EOF) {
-        c = buf;
-        buf = EOF;
+    if (buf_got_char) {
+     c = buf;
+     buf_got_char = 0;
     }
     else {
         c = getchar();
@@ -21,11 +21,12 @@ int getch(void) {
 }
 
 void ungetch(int c) {
-    if (buf != EOF) {
+    if (buf_got_char) {
         printf("ungetch: too many cahr");
     }
     else {
         buf = c;
+        buf_got_char = 1;
     }
 }
 void ungets(char s[]) {
@@ -38,6 +39,7 @@ void ungets(char s[]) {
 // clear stack function
 void clear(void) {
     buf = EOF;
+    buf_got_char = 0;
     if (sp > 0) {
         sp = 0;
 }
