@@ -7,6 +7,8 @@
 #define NL "\n"
 #define NLINE '\n'
 #define EOS '\0'
+
+#define MAXLINE 1000
 // token
 #define NUMBER '0'
 #define MATH 'n'
@@ -14,6 +16,8 @@
 // variable
 extern int sp;
 extern double val[];
+extern int line_index;
+extern char line[];
 // functions
 // get operators
 int getop(char []);

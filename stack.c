@@ -18,8 +18,8 @@ void push(double f) {
 double pop(void) {
     if (sp > 0) {
         return val[--sp];
-    }
-    else {
+    } else {
+        printf("error: stack empty\n");
         return 0.0;
     }
 }
