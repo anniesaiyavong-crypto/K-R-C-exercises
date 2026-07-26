@@ -132,9 +132,8 @@ int main(void) {
           // Enter
         case '\n':
           if (sp > 0) {
-            last_value = pop();
-            push(last_value);
-            printf("\t%.8g\n", last_value);
+            last_value = val[sp - 1];
+            printf("\t%.8g\n", val[sp - 1]);
           } else {
             printf("empty stack\n");
           }

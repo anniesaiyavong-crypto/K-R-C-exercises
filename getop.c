@@ -8,7 +8,7 @@ int line_index;
 
 int getop(char s[]) {
     int i, c, next;
-
+    i = 0;
     // skip spaces
     while ((s[0] = c = line[line_index++]) == ' ' || c == '\t') {
         ;
@@ -55,6 +55,10 @@ int getop(char s[]) {
     }
 
 
+    if (!isdigit(c) && c != '.') {
+        return c;
+    }
+
     i = (s[0] == '-') ? 1 : 0;
     s[i] = c;
 
@@ -70,7 +74,7 @@ int getop(char s[]) {
 
     s[i] = EOS;
 
-    if (c != '\0') {
+    if (c != '\n' && c != '\0' && c != EOF) {
         line_index--;
     }
 
