@@ -54,6 +54,3 @@ void check_stack(void) {
     }
     printf(NL);
 }
-
-
-
