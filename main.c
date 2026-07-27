@@ -1,7 +1,7 @@
 #include "calc.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <string.h>
 #define MAXOP 100
 
@@ -31,117 +31,117 @@ int main(void) {
 
     while ((type = getop(s)) != '\0' && type != EOF) {
       switch (type) {
-        case NUMBER:
-          push(atof(s));
-          break;
+      case NUMBER:
+        push(atof(s));
+        break;
 
-          // math functions
-        case MATH:
-          if (strcmp(s, "sin") == 0) {
-            push(sin(pop()));
-          } else if (strcmp(s, "exp") == 0) {
-            push(exp(pop()));
-          } else if (strcmp(s, "pow") == 0) {
-            op2 = pop();
-            push(pow(pop(), op2));
-          } else {
-            printf("unknown function %s\n", s);
-          }
-          break;
-
-          // assign variable
-        case VAR:
-          if (s[0] == 'V') {
-            push(last_value);
-          } else {
-            var_i = s[0] - 'A';
-            push(variable[var_i]);
-          }
-          break;
-
-        case '=':
-          pop();
-          if (sp > 0) {
-            double val_to_assign = pop();
-            variable[var_i] = val_to_assign;
-            push(val_to_assign);
-          } else {
-            printf("cant assign\n");
-          }
-          break;
-
-          // math operators
-        case '+':
-          push(pop() + pop());
-          break;
-
-        case '*':
-          push(pop() * pop());
-          break;
-
-        case '-':
+        // math functions
+      case MATH:
+        if (strcmp(s, "sin") == 0) {
+          push(sin(pop()));
+        } else if (strcmp(s, "exp") == 0) {
+          push(exp(pop()));
+        } else if (strcmp(s, "pow") == 0) {
           op2 = pop();
-          push(pop() - op2);
-          break;
+          push(pow(pop(), op2));
+        } else {
+          printf("unknown function %s\n", s);
+        }
+        break;
 
-        case '/':
-          op2 = pop();
-          if (op2 != 0.0) {
-            push(pop() / op2);
-          } else {
-            printf("Cannot divide 0\n");
-          }
-          break;
+        // assign variable
+      case VAR:
+        if (s[0] == 'V') {
+          push(last_value);
+        } else {
+          var_i = s[0] - 'A';
+          push(variable[var_i]);
+        }
+        break;
 
-        case '%':
-          intop1 = (int)pop();
-          intop2 = (int)pop();
-          if (intop1 != 0) {
-            push(intop2 % intop1);
-          } else {
-            printf("error: zero divisor\n");
-          }
-          break;
+      case '=':
+        pop();
+        if (sp > 0) {
+          double val_to_assign = pop();
+          variable[var_i] = val_to_assign;
+          push(val_to_assign);
+        } else {
+          printf("cant assign\n");
+        }
+        break;
 
-          // control command
-        case 'c':
-        case 'C':
-          clear();
-          line_index = strlen(line);
-          break;
+        // math operators
+      case '+':
+        push(pop() + pop());
+        break;
 
-          // duplicate
-        case 'd':
-        case 'D':
-          duplicate();
-          break;
+      case '*':
+        push(pop() * pop());
+        break;
 
-          // swap
-        case 's':
-        case 'S':
-          swap();
-          break;
+      case '-':
+        op2 = pop();
+        push(pop() - op2);
+        break;
 
-          // check the whole stack
-        case 'a':
-        case 'A':
-          check_stack();
-          line_index = strlen(line);
-          break;
+      case '/':
+        op2 = pop();
+        if (op2 != 0.0) {
+          push(pop() / op2);
+        } else {
+          printf("Cannot divide 0\n");
+        }
+        break;
 
-          // Enter
-        case '\n':
-          if (sp > 0) {
-            last_value = val[sp - 1];
-            printf("\t%.8g\n", val[sp - 1]);
-          } else {
-            printf("empty stack\n");
-          }
-          break;
+      case '%':
+        intop1 = (int)pop();
+        intop2 = (int)pop();
+        if (intop1 != 0) {
+          push(intop2 % intop1);
+        } else {
+          printf("error: zero divisor\n");
+        }
+        break;
 
-        default:
-          printf("Unknown command %s\n", s);
-          break;
+        // control command
+      case 'c':
+      case 'C':
+        clear();
+        line_index = strlen(line);
+        break;
+
+        // duplicate
+      case 'd':
+      case 'D':
+        duplicate();
+        break;
+
+        // swap
+      case 's':
+      case 'S':
+        swap();
+        break;
+
+        // check the whole stack
+      case 'a':
+      case 'A':
+        check_stack();
+        line_index = strlen(line);
+        break;
+
+        // Enter
+      case '\n':
+        if (sp > 0) {
+          last_value = val[sp - 1];
+          printf("\t%.8g\n", val[sp - 1]);
+        } else {
+          printf("empty stack\n");
+        }
+        break;
+
+      default:
+        printf("Unknown command %s\n", s);
+        break;
       }
     }
   }
