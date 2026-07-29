@@ -77,7 +77,6 @@ int getop(char s[]) {
     if (c != '\n' && c != '\0' && c != EOF) {
         line_index--;
     }
-
     return NUMBER;
 }
 
