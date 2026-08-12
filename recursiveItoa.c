@@ -1,5 +1,18 @@
-
+#include <stdio.h>
 #include <stdlib.h>
+// prototype
+void itoa(int number, char string[]);
+
+// main-----
+int main() {
+    int n = -10007;
+    char s[100] = "";
+    int w = 10;
+
+    itoa(n, s);
+    printf("%s\n", s);
+}
+
 void itoa(int num, char s[]) {
     static int i;
 
