@@ -1,30 +1,35 @@
 #include <string.h>
 #include <stdio.h>
 // prototype
-void reverse(char string[], int left, int right);
+void reverse(char string[]);
+void r_helper(char string[], int left, int right);
 // main-----
 int main() {
     char s[] = "obmobim";
     int left = 0;
     int right = strlen(s);
 
-    reverse(s, left, right);
+    reverse(s);
 
     printf("%s\n", s);
 }
 
 
+void reverse(char s[]) {
+    // call helper
+    r_helper(s, 0, strlen(s) - 1);
+}
 
-
-
-void reverse(char s[], int left, int right) {
+void r_helper(char s[],int left , int right) {
     // base case
-    if (left <= right)
+    if (left >= right) {
         return;
-    // swaping
+    }
+    // swap
     int temp = s[left];
     s[left] = s[right];
     s[right] = temp;
     // narrow down
-    reverse(s, left + 1, right - 1);
+    r_helper(s, left + 1, right - 1);
+
 }
