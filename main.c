@@ -3,64 +3,68 @@
 // prototypes
 int getch(void);
 void ungetch(int);
-int getint(int *);
+int getfloat(double *);
 
 int main() {
-    int n;
-    getint(&n);
+    double n;
+    getfloat(&n);
 
-    printf("%d\n", n);
+    printf("%f\n", n);
 
 }
+int getfloat(double *pn) {
+    int c, d, sign;
+    double power;
 
-int getint(int *pn) {
-    int c, temp, sign;
-
-    // skip space
+    // skip spaces
     while (isspace(c = getch()))
         ;
 
-    // for non-number
-    if (!isdigit(c) && c != EOF && c != '-' && c != '+') {
+    // ckeck for non-digit
+    if (!isdigit(c) && c != EOF && c != '+' && c != '-' && c != '.') {
         ungetch(c);
         return 0;
     }
-    // save sign
     sign = (c == '-') ? -1 : 1;
 
+    // handle sign
     if (c == '+' || c == '-') {
-        // save current c and read the next input
-        temp = c;
+        d = c;
+        c = getch();
+        if (!isdigit(c) && c != '.') {
+            if (c != EOF)
+                ungetch(c);
+            ungetch(d);
+            return 0;
+        }
+    }
+
+    // process left side of the '.'
+    for (*pn = 0.0; isdigit(c); c = getch()) {
+        *pn = 10.0 * *pn + (c - '0');
+    }
+    if (c == '.') {
         c = getch();
     }
-    // digit and EOF check
-    if (!isdigit(c)) {
-        if (c != EOF)
-            //push sign back
-            ungetch(c);
-        //psuh non-digit input back
-        ungetch(temp);
-        return 0;
+
+    // process right side of '.' and power
+    for (power = 1.0; isdigit(c); c = getch()) {
+        *pn = 10.0 * *pn + (c - '0');
+        power *= 10.0;
     }
 
+    // 6. add sign and divide by power
+    *pn = (sign * *pn) / power;
 
-
-
-
-    for (*pn = 0; isdigit(c); c = getch())
-        *pn = 10 * *pn + (c - '0');
-
-    // apply the sign
-    *pn *= sign;
-
-    if (c != EOF)
+    if (c != EOF) {
         ungetch(c);
+    }
 
     return c;
 }
 
 
-char buf[100];
+char buf[10];
 int bufp;
 
 int getch(void) {
