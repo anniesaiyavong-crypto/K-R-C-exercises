@@ -14,7 +14,7 @@ int main() {
 }
 
 int getint(int *pn) {
-    int c, sign;
+    int c, temp, sign;
 
     // skip space
     while (isspace(c = getch()))
@@ -28,8 +28,24 @@ int getint(int *pn) {
     // save sign
     sign = (c == '-') ? -1 : 1;
 
-    if (c == '+' || c == '-')
+    if (c == '+' || c == '-') {
+        // save current c and read the next input
+        temp = c;
         c = getch();
+    }
+    // digit and EOF check
+    if (!isdigit(c)) {
+        if (c != EOF)
+            //push sign back
+            ungetch(c);
+        //psuh non-digit input back
+        ungetch(temp);
+        return 0;
+    }
+
+
+
+
 
     for (*pn = 0; isdigit(c); c = getch())
         *pn = 10 * *pn + (c - '0');
