@@ -1,8 +1,16 @@
-// strlen function using pointer
-int p_strlen(char *s) {
-    int n;
+#include <stdlib.h>
+#include <stdio.h>
+int compare_int(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);
+}
 
-    for (n = 0; *s != '\0'; s++)
-        n++;
-    return n;
+int main() {
+    int array[] = {1, 8, 9, 7, 3};
+
+    qsort(array, 5, sizeof(int), compare_int);
+
+    for (int i = 0; i <= 4; i++)
+        printf("%d ",array[i]);
+
+    printf("\n");
 }
