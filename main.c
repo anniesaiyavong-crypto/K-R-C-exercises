@@ -1,16 +1,23 @@
-#include <stdlib.h>
-#include <stdio.h>
-int compare_int(const void *a, const void *b) {
-    return (*(int*)a - *(int*)b);
+#define ALLOCSIZE 10000
+
+// spaces for mem allocattion
+static char allocbuf[ALLOCSIZE];
+// pin
+static char *alloc_ptr = allocbuf;
+
+char *alloc(int n) {
+    // check for the available spaces
+    if (allocbuf + ALLOCSIZE - alloc_ptr >= n) {
+        // move the pin by n and return its prev address
+        alloc_ptr += n;
+        return alloc_ptr - n;
+    } else
+        // full!
+        return 0;
 }
 
-int main() {
-    int array[] = {1, 8, 9, 7, 3};
-
-    qsort(array, 5, sizeof(int), compare_int);
-
-    for (int i = 0; i <= 4; i++)
-        printf("%d ",array[i]);
-
-    printf("\n");
+void afree(char *p) {
+    // check if p is within allocbuf range
+    if (p >= allocbuf && p < allocbuf + ALLOCSIZE)
+        alloc_ptr = p;
 }
