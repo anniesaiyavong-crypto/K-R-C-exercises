@@ -1,32 +1,39 @@
 #include <stdio.h>
-#include <string.h>
-// if t occurs at the end of s, return 1, 0 otherwise
-int strend(char *s, char *t) {
-    char *t_start_ptr = t;
-    // check the length
-    if (strlen(s) < strlen(t))
-        return 0;
-  // move both to '\0'
-    while (*s)
-        s++;
-    while (*t)
-        t++;
-    // move back
-    while (*s == *t) {
-        s--;
-        t--;
-    }
-    // check
-    if (++t == t_start_ptr)
-        return 1;
+void str_cpy(char *s, char *t, int n) {
+    // copy until n become 0 or no char left in t
+  while (n > 0 && *t != '\0') {
+    *s++ = *t++;
+    n--;
+  }
+  // end with \0
+  if (n > 0)
+    *s = '\0';
+}
+void str_cat(char *s, char *t, int n) {
+    // move to \0
+  while (*s)
+    s++;
+    // copy to its end
+  while (n > 0 && *t != '\0') {
+    *s++ = *t++;
+    n--;
+  }
 
-    return 0;
+  *s = '\0';
 }
 
+int str_cmp(char *s, char *t, int n) {
+    // compare s and t until n is 0
+    for (; n > 0 && *s == *t; s++, t++, n--)
+        if (*s == '\0')
+            return 0;
+
+    return (n == 0) ? 0 : (*s - *t);
+}
 int main() {
-    char s[] = {"banana"};
-    char t[] = {"na"};
+  char s[] = {"II000"};
+  char t[] = {"IIIII"};
+  int n = 2;
 
-    printf("%d\n", strend(s, t));
-
+  printf("%d\n", str_cmp(s, t, n));
 }
