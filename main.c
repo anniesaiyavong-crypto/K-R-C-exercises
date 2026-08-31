@@ -1,8 +1,8 @@
-// string compare function, return 0 if both macth
-int string_cmp(char *s, char *t) {
-    for (; *s == *t; s++, t++)
-        if (*s == '\0')
-            return 0;
-
-    return *s - *t;
+void strcat(char *s, char *t) {
+    // find \0
+    while (*s)
+        s++;
+    // copy loop
+    while (*s++ = *t++)
+        ;
 }
