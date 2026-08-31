@@ -1,23 +1,13 @@
-#define ALLOCSIZE 10000
-
-// spaces for mem allocattion
-static char allocbuf[ALLOCSIZE];
-// pin
-static char *alloc_ptr = allocbuf;
-
-char *alloc(int n) {
-    // check for the available spaces
-    if (allocbuf + ALLOCSIZE - alloc_ptr >= n) {
-        // move the pin by n and return its prev address
-        alloc_ptr += n;
-        return alloc_ptr - n;
-    } else
-        // full!
-        return 0;
+// copy t to s, array version
+void string_cpy(char *s, char *t) {
+  int i = 0;
+  while ((s[i] = t[i]) != '\0')
+    i++;
 }
-
-void afree(char *p) {
-    // check if p is within allocbuf range
-    if (p >= allocbuf && p < allocbuf + ALLOCSIZE)
-        alloc_ptr = p;
+// copy, pointer version
+void string_cpy_p(char *s, char *t) {
+  while ((*s = *t) != '\0') {
+    s++;
+    t++;
+  }
 }
