@@ -1,5 +1,8 @@
-// string copy, shorter pointer version
-void string_cpy_p(char *s, char *t) {
-  while ((*s++ = *t++) != '\0')
-      ;
+// string compare function, return 0 if both macth
+int string_cmp(char *s, char *t) {
+    for (; *s == *t; s++, t++)
+        if (*s == '\0')
+            return 0;
+
+    return *s - *t;
 }
