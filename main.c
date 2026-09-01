@@ -1,17 +1,18 @@
-#include <stdio.h>
-int get_line(char *s, int lim) {
-    int c;
-    char *s_start_ptr = s;
-    // copy input loop
-  while (--lim > 0 && (c = getchar()) != EOF && c != '\n')
-    *s++ = c;
-    // include newline
-  if (c == '\n') {
-    *s++ = c;
+#include <ctype.h>
+int atoi(char *s) {
+  int n = 0;
+  int sign;
+// skip white space
+  while (isspace(*s))
+      s++;
 
+  sign = (*s == '-') ? -1 : 1;
+
+  if (*s == '+' || *s == '-')
+    s++;
+
+  while (isdigit(*s)) {
+    n = 10 * n + (*s++ - '0');
   }
-  // apply '\0'
-  *s = '\0';
-  // return string length
-  return s - s_start_ptr;
+  return sign * n;
 }
