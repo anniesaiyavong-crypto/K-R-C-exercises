@@ -1,21 +1,38 @@
-// return the first index of t that occurred in s
-int strindex(char *s, char *t) {
-  char *s_ptr, *p1, *p2;
-  // return if t is empty
-  if (*t == '\0')
-    return 0;
+#include <ctype.h>
+#include <stdio.h>
+// token
+#define NUMBER '0'
 
-  for (s_ptr = s; *s_ptr != '\0'; s_ptr++) {
-    p1 = s_ptr;
-    p2 = t;
-    // checking loop
-    while (*p1 != '\0' && *p2 != '\0' && *p1 == *p2) {
-      p1++;
-      p2++;
-    }
-    // return index
-    if (*p2 == '\0')
-      return s_ptr - s;
-  }
-  return -1;
+int getch(void);
+void ungetch(int);
+
+// get operator and operand
+int getop(char *s) {
+  int c;
+
+  // skip spaces
+  while ((*s = c = getch()) == ' ' || c == '\t')
+    ;
+  *(s + 1) = '\0';
+
+  // return operator if found
+  if (!isdigit(c) && c != '.')
+    return c;
+
+  // collect integer
+  if (isdigit(c))
+    while (isdigit(*++s = c = getch()))
+      ;
+
+  // 4. collect fraction
+  if (c == '.')
+    while (isdigit(*++s = c = getch()))
+      ;
+
+  *s = '\0';
+
+  if (c != EOF)
+    ungetch(c);
+
+  return NUMBER;
 }
