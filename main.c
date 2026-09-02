@@ -1,31 +1,21 @@
-#include <ctype.h>
-// string to double
-double atof(char *s) {
-  double val = 0.0, power = 1.0;
-  int sign;
+// return the first index of t that occurred in s
+int strindex(char *s, char *t) {
+  char *s_ptr, *p1, *p2;
+  // return if t is empty
+  if (*t == '\0')
+    return 0;
 
-  // skip spaces
-  while (isspace(*s))
-    s++;
-
-  // save sign
-  sign = (*s == '-') ? -1 : 1;
-  if (*s == '+' || *s == '-')
-    s++;
-
-  // convert
-  while (isdigit(*s))
-    val = 10.0 * val + (*s++ - '0');
-
-  // skip decimal point
-  if (*s == '.')
-    s++;
-
-  // convert fraction
-  while (isdigit(*s)) {
-    val = 10.0 * val + (*s++ - '0');
-    power *= 10.0;
+  for (s_ptr = s; *s_ptr != '\0'; s_ptr++) {
+    p1 = s_ptr;
+    p2 = t;
+    // checking loop
+    while (*p1 != '\0' && *p2 != '\0' && *p1 == *p2) {
+      p1++;
+      p2++;
+    }
+    // return index
+    if (*p2 == '\0')
+      return s_ptr - s;
   }
-
-  return sign * val / power;
+  return -1;
 }
