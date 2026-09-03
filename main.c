@@ -1,9 +1,9 @@
 #include <stdio.h>
-// 1st version
+// 2nd version
 int main(int argc, char *argv[]) {
-  int i;
+  while (--argc > 0)
+    printf("%s%s", *++argv, (argc > 1) ? " " : "");
 
-  for (i = 0; i < argc; i++)
-    printf("%s%s", argv[i], (i < argc - 1) ? " " : "");
   printf("\n");
+  return 0;
 }
