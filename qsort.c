@@ -1,7 +1,8 @@
 #include <string.h>
+void swap(char **, int i, int j);
+
 void qsort(char *v[], int left, int right) {
     int i, last;
-    void swap(char *v[], int i, int j);
 
     if (left >= right)
         return;
