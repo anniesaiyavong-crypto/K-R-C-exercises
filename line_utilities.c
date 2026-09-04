@@ -6,6 +6,12 @@
 // writelines: write output lines
 void writelines(char *lineptr[], int nlines) {
   int i;
+  if (reverse)
+    for (i = nlines - 1; i >= 0; i--)
+      printf("%s\n", lineptr[i]);
+  if (reverse)
+    return;
+
   for (i = 0; i < nlines; i++)
     printf("%s\n", lineptr[i]);
 }

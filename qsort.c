@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 void q_sort(void *v[], int left, int right, int (*comp)(void *, void *)) {
   int i, last;
 
@@ -20,17 +21,15 @@ void q_sort(void *v[], int left, int right, int (*comp)(void *, void *)) {
 }
 
 int numcmp(const char *s1, const char *s2) {
-  double v1, v2;
-
-  v1 = atof(s1);
-  v2 = atof(s2);
+  double v1 = atof(s1);
+  double v2 = atof(s2);
 
   if (v1 < v2)
     return -1;
   else if (v1 > v2)
     return 1;
   else
-    return 0;
+    return strcmp(s1, s2);
 }
 void swap(void *v[], int i, int j) {
   void *temp;
