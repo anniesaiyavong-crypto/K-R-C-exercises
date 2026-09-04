@@ -1,34 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TAB_DEFAULT 8
+#define DEFAULT_START 1
+#define DEFAULT_INC 8
+void parse_args(int argc, char *argv[], int *m, int *n) {
+  *m = DEFAULT_START;
+  *n = DEFAULT_INC;
 
-int is_tab_stop(int col, int argc, char *argv[]) {
-  if (argc == 1) {
-
-    return (col % TAB_DEFAULT == 0);
+  while (--argc > 0) {
+    char *s = *++argv;
+    if (*s == '-') {
+      *m = atoi(s + 1);
+    } else if (*s == '+') {
+      *n = atoi(s + 1);
+    }
   }
+}
 
-  for (int i = 1; i < argc; i++) {
-    int tab_pos = atoi(argv[i]);
-    if (col == tab_pos)
-      return 1;
-  }
-  return 0;
+int is_tab_stop(int col, int m, int n) {
+  if (col < m)
+    return 0;
+  return ((col - m) % n == 0);
 }
 
 int main(int argc, char *argv[]) {
   int c;
-  int col = 0;
+  int col = 1;
+  int m, n;
+
+  parse_args(argc, argv, &m, &n);
+
   while ((c = getchar()) != EOF) {
     if (c == '\t') {
       do {
         putchar(' ');
         col++;
-      } while (!is_tab_stop(col, argc, argv));
+      } while (!is_tab_stop(col, m, n));
     } else if (c == '\n') {
       putchar(c);
-      col = 0;
+      col = 1;
     } else {
       putchar(c);
       col++;

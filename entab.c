@@ -1,44 +1,61 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TAB_DEFAULT 8
+#define DEFAULT_START 1
+#define DEFAULT_INC 8
 
-int is_tab_stop(int col, int argc, char *argv[]) {
-  if (argc == 1)
-    return (col % TAB_DEFAULT == 0);
+void parse_args(int argc, char *argv[], int *m, int *n) {
+  *m = DEFAULT_START;
+  *n = DEFAULT_INC;
 
-  for (int i = 1; i < argc; i++) {
-    if (col == atoi(argv[i]))
-      return 1;
+  while (--argc > 0) {
+    char *s = *++argv;
+    if (*s == '-') {
+      *m = atoi(s + 1);
+    } else if (*s == '+') {
+      *n = atoi(s + 1);
+    }
   }
-  return 0;
+}
+
+int is_tab_stop(int col, int m, int n) {
+  if (col < m)
+    return 0;
+  return ((col - m) % n == 0);
 }
 
 int main(int argc, char *argv[]) {
   int c;
-  int col = 0;
+  int col = 1;
   int space_count = 0;
+  int m, n;
+
+  parse_args(argc, argv, &m, &n);
 
   while ((c = getchar()) != EOF) {
     if (c == ' ') {
       space_count++;
-      col++;
-      if (is_tab_stop(col, argc, argv)) {
+      if (is_tab_stop(col + space_count, m, n)) {
         putchar('\t');
+        col += space_count;
         space_count = 0;
       }
     } else {
+
       while (space_count > 0) {
         putchar(' ');
+        col++;
         space_count--;
       }
 
       putchar(c);
-      if (c == '\n')
-        col = 0;
-      else if (c == '\t') {
-        while (!is_tab_stop(++col, argc, argv))
-          ;
+      if (c == '\n') {
+        col = 1;
+      } else if (c == '\t') {
+
+        do {
+          col++;
+        } while (!is_tab_stop(col, m, n));
       } else {
         col++;
       }
