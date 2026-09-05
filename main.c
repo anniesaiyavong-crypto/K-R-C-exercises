@@ -24,9 +24,11 @@ int main(int argc, char *argv[]) {
       case 'r':
         reverse = 1;
         break;
+
       case 'f':
         fold = 1;
         break;
+
       case 'h':
         printf("-n numeric sort, -r reverse\n");
         return 0;
@@ -35,10 +37,20 @@ int main(int argc, char *argv[]) {
         printf("unknow argument\n");
         return 0;
       }
+  // function pointer variable
+  int (*comp)(void *, void *);
+
+  // choose flag
+  if (numeric) {
+    comp = (int (*)(void *, void *))numcmp;
+  } else if (fold) {
+    comp = (int (*)(void *, void *))charcmp;
+  } else {
+    comp = (int (*)(void *, void *))strcmp;
+  }
 
   if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
-    q_sort((void **)lineptr, 0, nlines - 1,
-           (int (*)(void *, void *))(numeric ? numcmp : strcmp));
+    q_sort((void **)lineptr, 0, nlines - 1, comp);
     writelines(lineptr, nlines);
     return 0;
   } else {
