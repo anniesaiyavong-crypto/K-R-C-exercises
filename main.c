@@ -8,6 +8,7 @@ char *lineptr[MAXLINES];
 // flags
 int numeric = 0;
 int reverse = 0;
+int fold = 0;
 // sort input lines
 int main(int argc, char *argv[]) {
   // number of input line read
@@ -22,6 +23,9 @@ int main(int argc, char *argv[]) {
 
       case 'r':
         reverse = 1;
+        break;
+      case 'f':
+        fold = 1;
         break;
       case 'h':
         printf("-n numeric sort, -r reverse\n");

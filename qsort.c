@@ -1,3 +1,5 @@
+#include "sort.h"
+#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 void q_sort(void *v[], int left, int right, int (*comp)(void *, void *)) {
@@ -19,7 +21,7 @@ void q_sort(void *v[], int left, int right, int (*comp)(void *, void *)) {
   q_sort(v, left, last - 1, comp);
   q_sort(v, last + 1, right, comp);
 }
-
+// numeric compare
 int numcmp(const char *s1, const char *s2) {
   double v1 = atof(s1);
   double v2 = atof(s2);
@@ -30,6 +32,14 @@ int numcmp(const char *s1, const char *s2) {
     return 1;
   else
     return strcmp(s1, s2);
+}
+// string compare for fold flag
+int charcmp(const char *s1, const char *s2) {
+  for (; fold ? (tolower(*s1) == tolower(*s2)) : (*s1 == *s2); s1++, s2++) {
+    if (*s1 == '\0')
+      return 0;
+  }
+  return fold ? (tolower(*s1) - tolower(*s2)) : (*s1 - *s2);
 }
 void swap(void *v[], int i, int j) {
   void *temp;
