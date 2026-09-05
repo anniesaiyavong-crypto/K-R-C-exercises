@@ -7,6 +7,5 @@ void q_sort(void *lineptr[], int left, int right, int (*comp)(void *, void *));
 int numcmp(const char *, const char *);
 int charcmp(const char *, const char *);
 
-extern int reverse;
-extern int fold;
 extern int directory;
+extern int fold;
