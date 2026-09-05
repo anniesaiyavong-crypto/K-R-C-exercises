@@ -9,3 +9,4 @@ int charcmp(const char *, const char *);
 
 extern int reverse;
 extern int fold;
+extern int directory;

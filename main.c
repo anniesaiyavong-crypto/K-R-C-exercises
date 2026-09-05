@@ -9,6 +9,7 @@ char *lineptr[MAXLINES];
 int numeric = 0;
 int reverse = 0;
 int fold = 0;
+int directory = 0;
 // sort input lines
 int main(int argc, char *argv[]) {
   // number of input line read
@@ -27,6 +28,9 @@ int main(int argc, char *argv[]) {
 
       case 'f':
         fold = 1;
+        break;
+      case 'd':
+        directory = 1;
         break;
 
       case 'h':

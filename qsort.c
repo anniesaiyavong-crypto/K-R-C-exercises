@@ -35,11 +35,30 @@ int numcmp(const char *s1, const char *s2) {
 }
 // string compare for fold flag
 int charcmp(const char *s1, const char *s2) {
-  for (; fold ? (tolower(*s1) == tolower(*s2)) : (*s1 == *s2); s1++, s2++) {
-    if (*s1 == '\0')
-      return 0;
-  }
-  return fold ? (tolower(*s1) - tolower(*s2)) : (*s1 - *s2);
+  char a, b;
+
+  do {
+    if (directory) {
+      while (*s1 != '\0' && !isalnum((unsigned char)*s1) && *s1 != ' ')
+        s1++;
+      while (*s2 != '\0' && !isalnum((unsigned char)*s2) && *s2 != ' ')
+        s2++;
+    }
+    a = *s1;
+    b = *s2;
+
+    if (fold) {
+      a = tolower((unsigned char)a);
+      b = tolower((unsigned char)b);
+    }
+    if (a == b) {
+      if (a == '\0')
+        return 0;
+      s1++;
+      s2++;
+    }
+  } while (a == b);
+  return a - b;
 }
 void swap(void *v[], int i, int j) {
   void *temp;
