@@ -27,9 +27,10 @@ int gettoken(void) {
   int c, getch(void);
   void ungetch(int);
   char *p = token;
-  // skip space
+
   while ((c = getch()) == ' ' || c == '\t')
     ;
+
   if (c == '(') {
     if ((c = getch()) == ')') {
       strcpy(token, "()");
@@ -38,18 +39,25 @@ int gettoken(void) {
       ungetch(c);
       return tokentype = '(';
     }
-
   } else if (c == '[') {
-    for (*p++ = c; (*p++ = getch()) != ']';)
-      ;
+    for (*p++ = c; (*p = getch()) != ']'; p++) {
+      if (*p == '\n' || *p == EOF) {
+        break;
+      }
+    }
+    if (*p == ']') {
+      p++;
+    }
     *p = '\0';
     return tokentype = BRACKETS;
   } else if (isalpha(c)) {
-    for (*p++ = c; isalnum(c = getch());)
+    for (*p++ = c; isalnum(c = getch());) {
       *p++ = c;
+    }
     *p = '\0';
     ungetch(c);
     return tokentype = NAME;
-  } else
+  } else {
     return tokentype = c;
+  }
 }
