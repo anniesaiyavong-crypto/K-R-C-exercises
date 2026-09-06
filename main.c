@@ -4,7 +4,7 @@
 
 #define MAXTOKEN 100
 
-enum { nAME, PARENS, BRACKETS };
+enum { NAME, PARENS, BRACKETS };
 void dcl(void);
 void dirdcl(void);
 
@@ -26,4 +26,34 @@ int main() {
     printf("%s: %s %s\n", name, out, datatype);
   }
   return 0;
+}
+int gettoken(void) {
+  int c, getch(void);
+  void ungetch(int);
+  char *p = token;
+  // skip space
+  while ((c = getch()) == ' ' || c == '\t')
+    ;
+  if (c == '(') {
+    if ((c = getch()) == ')') {
+      strcpy(token, "()");
+      return tokentype = PARENS;
+    } else {
+      ungetch(c);
+      return tokentype = '(';
+    }
+
+  } else if (c == '[') {
+    for (*p++ = c; (*p++ = getch()) != ']';)
+      ;
+    *p = '\0';
+    return tokentype = BRACKETS;
+  } else if (isalpha(c)) {
+    for (*p++ = c; isalnum(c = getch());)
+      *p++ = c;
+    *p = '\0';
+    ungetch(c);
+    return tokentype = NAME;
+  } else
+    return tokentype = c;
 }
