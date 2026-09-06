@@ -1,3 +1,7 @@
+#include "parser.h"
+#include <stdio.h>
+#include <string.h>
+
 // dcl: parse a declarator
 void dcl(void) {
   int ns;
@@ -16,10 +20,10 @@ void dirdcl(void) {
     dcl();
     if (tokentype != ')')
       printf("error: missing )\n");
-  } else if (toekentype == NAME)
+  } else if (tokentype == NAME)
     strcpy(name, token);
   else
-    print("error: expected nameor (dcl)\n");
+    printf("error: expected nameor (dcl)\n");
 
   while ((type = gettoken()) == PARENS || type == BRACKETS)
     if (type == PARENS)
@@ -27,6 +31,6 @@ void dirdcl(void) {
     else {
       strcat(out, " array");
       strcat(out, " token");
-      strcat(out; " of");
+      strcat(out, " of");
     }
 }
