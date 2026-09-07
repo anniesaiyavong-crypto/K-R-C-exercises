@@ -1,15 +1,15 @@
-#pragma once
 #define MAXTOKEN 100
-enum { NAME, PARENS, BRACKETS };
 
-int getch(void);
-void ungetch(int);
-void dcl(void);
-void dirdcl(void);
-int gettoken(void);
+enum { NAME, PARENS, BRACKETS, QUALIFIER };
 
 extern int tokentype;
-extern char token[MAXTOKEN];
-extern char name[MAXTOKEN];
-extern char datatype[MAXTOKEN];
-extern char out[1000];
+extern char token[];
+extern char name[];
+extern char datatype[];
+extern char out[];
+extern int prevtoken;
+
+int gettoken(void);
+void dcl(void);
+void dirdcl(void);
+void paramdcl(void);

@@ -10,58 +10,38 @@ char datatype[MAXTOKEN];
 char out[1000];
 int prevtoken = 0;
 
-int gettoken(void);
-
 int main(void) {
-  int type;
-  char temp[MAXTOKEN];
-
   while (gettoken() != EOF) {
-    strcpy(out, token);
+    // check type specifier or qualifier
+    strcpy(datatype, token);
+    out[0] = '\0';
+    name[0] = '\0';
 
-    while ((type = gettoken()) != '\n' && type != EOF) {
-      if (type == PARENS || type == BRACKETS) {
-        // append () or [] directly
-        strcat(out, token);
-      } else if (type == '*') {
+    dcl();
 
-        type = gettoken();
-        if (type == PARENS || type == BRACKETS) {
-
-          sprintf(temp, "(*%s)%s", out, token);
-          strcpy(out, temp);
-        } else {
-
-          sprintf(temp, "*%s", out);
-          strcpy(out, temp);
-
-          prevtoken = 1;
-        }
-      } else if (type == NAME) {
-        sprintf(temp, "%s %s", token, out);
-        strcpy(out, temp);
-      } else {
-        printf("invalid input at %s\n", token);
+    if (tokentype != '\n') {
+      printf("syntax error\n");
+      while (tokentype != '\n' && tokentype != EOF) {
+        gettoken(); // Flush remaining garbage
       }
+    } else {
+      printf("%s: %s %s\n", name, out, datatype);
     }
-    printf("%s\n", out);
   }
   return 0;
 }
 
-// gettoken: return next token from input, supports reusing previous token
+// gettoken: handles QUALIFIER (const/volatile) and identifiers
 int gettoken(void) {
   int c, getch(void);
   void ungetch(int);
   char *p = token;
 
-  // if previous token was unconsumed, reuse it directly
   if (prevtoken) {
     prevtoken = 0;
     return tokentype;
   }
 
-  // skip whitespaces except newline
   while ((c = getch()) == ' ' || c == '\t')
     ;
 
@@ -87,6 +67,11 @@ int gettoken(void) {
       *p++ = c;
     *p = '\0';
     ungetch(c);
+
+    // identify qualifiers like const or volatile
+    if (strcmp(token, "const") == 0 || strcmp(token, "volatile") == 0) {
+      return tokentype = QUALIFIER;
+    }
     return tokentype = NAME;
   } else {
     return tokentype = c;
