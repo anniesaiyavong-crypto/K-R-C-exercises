@@ -1,3 +1,5 @@
+#define min(a, b) ((a) < (b) ? (a) : (b))
+#define max(a, b) ((a) > (b) ? (a) : (b))
 // coordinate point
 struct point {
   int x;
@@ -34,4 +36,13 @@ int main() {
 
   middle = makepoint((screen.p1.x + screen.p2.x) / 2,
                      (screen.p1.y + screen.p2.y) / 2);
+}
+// canonrect: canonicalize coordiantes of rectangle
+struct rect canonrect(struct rect r) {
+  struct rect temp;
+
+  temp.p1.x = min(r.p1.x, r.p2.x);
+  temp.p2.x = min(r.p1.x, r.p2.x);
+  temp.p1.y = min(r.p1.x, r.p2.x);
+  temp.p2.y = min(r.p1.x, r.p2.x);
 }
