@@ -1,48 +1,33 @@
-#define min(a, b) ((a) < (b) ? (a) : (b))
-#define max(a, b) ((a) > (b) ? (a) : (b))
-// coordinate point
-struct point {
-  int x;
-  int y;
-};
-// rectangle point
-struct rect {
-  struct point p1;
-  struct point p2;
-};
-// assign value to point
-struct point makepoint(int x, int y) {
-  struct point temp;
+#include "common.h"
+#define NKEYS (sizeof keytab / sizeof(keytab[0]))
+#include <ctype.h>
+#include <stdio.h>
+#define MAXWORD 100
+int binsearch(char *word, struct key tab[], int n);
+int getword(char *word, int lim);
 
-  temp.x = x;
-  temp.y = y;
+struct key keytab[] = {
+    "auto",     0, "break",   0, "case",   0, "char",     0, "const",  0,
+    "continue", 0, "default", 0, "do",     0, "double",   0, "else",   0,
+    "enum",     0, "extern",  0, "float",  0, "for",      0, "goto",   0,
+    "if",       0, "int",     0, "long",   0, "register", 0, "return", 0,
+    "short",    0, "signed",  0, "sizeof", 0, "static",   0, "struct", 0,
+    "switch",   0, "typedef", 0, "union",  0, "unsigned", 0, "void",   0,
+    "volatile", 0, "while",   0};
 
-  return temp;
-}
-struct point addpoint(struct point p1, struct point p2) {
-  p1.x += p2.x;
-  p1.y += p2.y;
-
-  return p1;
-}
-
-struct rect screen;
-struct point middle;
-struct point makepoint(int, int);
-
+// count c keywords
 int main() {
-  screen.p1 = makepoint(7, 9);
-  screen.p2 = makepoint(10, 15);
+  int n;
+  char word[MAXWORD];
 
-  middle = makepoint((screen.p1.x + screen.p2.x) / 2,
-                     (screen.p1.y + screen.p2.y) / 2);
-}
-// canonrect: canonicalize coordiantes of rectangle
-struct rect canonrect(struct rect r) {
-  struct rect temp;
+  while (getword(word, MAXWORD) != EOF)
+    if isalpha (word[0])
+      if ((n = binsearch(word, keytab, NKEYS)) >= 0)
+        keytab[n].count++;
 
-  temp.p1.x = min(r.p1.x, r.p2.x);
-  temp.p2.x = min(r.p1.x, r.p2.x);
-  temp.p1.y = min(r.p1.x, r.p2.x);
-  temp.p2.y = min(r.p1.x, r.p2.x);
+  for (n = 0; n < NKEYS; n++)
+    if (keytab[n].count > 0)
+      printf("%4d %s\n", keytab[n].count, keytab[n].word);
+
+  return 0;
 }
