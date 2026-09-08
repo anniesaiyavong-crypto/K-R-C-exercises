@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #define MAXWORD 100
-int binsearch(char *word, struct key tab[], int n);
+struct key *binsearch(char *word, struct key *tab, int n);
 int getword(char *word, int lim);
 
 struct key keytab[] = {
@@ -17,17 +17,17 @@ struct key keytab[] = {
 
 // count c keywords
 int main() {
-  int n;
   char word[MAXWORD];
+  struct key *p;
 
   while (getword(word, MAXWORD) != EOF)
     if isalpha (word[0])
-      if ((n = binsearch(word, keytab, NKEYS)) >= 0)
-        keytab[n].count++;
+      if ((p = binsearch(word, keytab, NKEYS)) != NULL)
+        p->count++;
 
-  for (n = 0; n < NKEYS; n++)
-    if (keytab[n].count > 0)
-      printf("%4d %s\n", keytab[n].count, keytab[n].word);
+  for (p = keytab; p < keytab + NKEYS; p++)
+    if (p->count > 0)
+      printf("%4d %s\n", p->count, p->word);
 
   return 0;
 }

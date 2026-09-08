@@ -6,23 +6,23 @@ int getch(void);
 void ungetch(int c);
 
 // binsearch: find word in tab[0]... tab[n-1]
-int binsearch(char *word, struct key tab[], int n) {
+struct key *binsearch(char *word, struct key *tab, int n) {
   int cond;
-  int low, high, mid;
+  struct key *low = &tab[0];
+  struct key *high = &tab[n];
+  struct key *mid;
 
-  low = 0;
-  high = n - 1;
-  while (low <= high) {
-    mid = (low + high) / 2;
+  while (low < high) {
+    mid = low + (high - low) / 2;
 
-    if ((cond = strcmp(word, tab[mid].word)) < 0)
-      high = mid - 1;
+    if ((cond = strcmp(word, mid->word)) < 0)
+      high = mid;
     else if (cond > 0)
       low = mid + 1;
     else
       return mid;
   }
-  return -1;
+  return NULL;
 }
 // getword: get next word or character from input
 int getword(char *word, int lim) {
