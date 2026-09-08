@@ -1,29 +1,11 @@
 #include "common.h"
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 int getch(void);
 void ungetch(int c);
-
-// binsearch: find word in tab[0]... tab[n-1]
-struct key *binsearch(char *word, struct key *tab, int n) {
-  int cond;
-  struct key *low = &tab[0];
-  struct key *high = &tab[n];
-  struct key *mid;
-
-  while (low < high) {
-    mid = low + (high - low) / 2;
-
-    if ((cond = strcmp(word, mid->word)) < 0)
-      high = mid;
-    else if (cond > 0)
-      low = mid + 1;
-    else
-      return mid;
-  }
-  return NULL;
-}
+//-----------------------------------------------------------------
 // getword: get next word or character from input
 int getword(char *word, int lim) {
   int c, d;
@@ -89,3 +71,45 @@ int getword(char *word, int lim) {
   *w = '\0';
   return c;
 }
+//-----------------------------------------------------------------
+// treeprint: in-order print of tree p
+void treeprint(struct tnode *p) {
+  if (p != NULL) {
+    treeprint(p->left);
+    printf("%4d %s\n", p->count, p->word);
+    treeprint(p->right);
+  }
+}
+// talloc: make a tnode
+struct tnode *talloc(void) {
+  return (struct tnode *)malloc(sizeof(struct tnode));
+}
+// strdup: make a duplicate of s
+char *str_dup(char *s) {
+  char *p;
+
+  p = (char *)malloc(strlen(s) + 1); // + 1 for '\0'
+
+  return p;
+}
+
+// addtree: add a node with w, at or below p
+struct tnode *addtree(struct tnode *p, char *w) {
+  int cond;
+  // a new word has arrived
+  if (p == NULL) {
+    // make a new node
+    p = talloc();
+    p->word = str_dup(w);
+    p->count = 1;
+    p->left = p->right = NULL;
+  } else if ((cond = strcmp(w, p->word)) == 0)
+    p->count++;      // repeated word
+  else if (cond < 0) // less than into left subtree
+    p->left = addtree(p->left, w);
+  else // greater than into righ subtree
+    p->right = addtree(p->right, w);
+
+  return p;
+}
+//-----------------------------------------------------------------

@@ -1,33 +1,26 @@
-#include "common.h"
-#define NKEYS (sizeof keytab / sizeof(keytab[0]))
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
+
 #define MAXWORD 100
-struct key *binsearch(char *word, struct key *tab, int n);
-int getword(char *word, int lim);
 
-struct key keytab[] = {
-    "auto",     0, "break",   0, "case",   0, "char",     0, "const",  0,
-    "continue", 0, "default", 0, "do",     0, "double",   0, "else",   0,
-    "enum",     0, "extern",  0, "float",  0, "for",      0, "goto",   0,
-    "if",       0, "int",     0, "long",   0, "register", 0, "return", 0,
-    "short",    0, "signed",  0, "sizeof", 0, "static",   0, "struct", 0,
-    "switch",   0, "typedef", 0, "union",  0, "unsigned", 0, "void",   0,
-    "volatile", 0, "while",   0};
+// prototypes
+struct tnode *addtree(struct tnode *, char *);
+void treeprint(struct tnode *);
+int getword(char *, int);
+struct tnode *talloc(void);
+char *str_dup(char *);
 
-// count c keywords
 int main() {
+  struct tnode *root;
   char word[MAXWORD];
-  struct key *p;
 
+  root = NULL;
   while (getword(word, MAXWORD) != EOF)
-    if isalpha (word[0])
-      if ((p = binsearch(word, keytab, NKEYS)) != NULL)
-        p->count++;
+    ;
+  if (isalpha(word[0]))
+    root = addtree(root, word);
 
-  for (p = keytab; p < keytab + NKEYS; p++)
-    if (p->count > 0)
-      printf("%4d %s\n", p->count, p->word);
-
+  treeprint(root);
   return 0;
 }

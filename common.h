@@ -1,6 +1,7 @@
 #pragma once
-#define NKEYS (sizeof keytab / sizeof(keytab[0]))
-struct key {
+struct tnode {
   char *word;
   int count;
+  struct tnode *left;
+  struct tnode *right;
 };
