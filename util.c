@@ -8,75 +8,70 @@ void ungetch(int c);
 //-----------------------------------------------------------------
 // getword: get next word or character from input
 int getword(char *word, int lim) {
-  int c, d;
+  int c;
   char *w = word;
-
   // skip space
-  while (isspace(c = getch()))
-    ;
+  while ((c = getchar()) != EOF) {
+    if (isspace(c))
+      continue;
 
-  if (c != EOF)
-    *w++ = c;
-
-  if (isalpha(c) || c == '_') {
-    for (; --lim > 0; w++) {
-      if (!isalnum(*w = getch()) && *w != '_') {
-        ungetch(*w);
-        break;
-      }
-    }
-    *w = '\0';
-    return word[0];
-  }
-
-  if (c == '"' || c == '\'') {
-    int quote = c;
-    for (; --lim > 0; w++) {
-      if ((*w = getch()) == '\\') {
-        if (--lim > 0)
-          *++w = getch();
-      } else if (*w == quote || *w == EOF) {
-        if (*w != EOF)
-          w++;
-        break;
-      }
-    }
-    *w = '\0';
-    return word[0];
-  }
-  if (c == '/') {
-    if ((d = getch()) == '*') {
-      while ((c = getch()) != EOF) {
-        if (c == '*') {
-          if ((c = getch()) == '/')
+    if (c == '/') {
+      int next = getchar();
+      if (next == '*') {
+        int prev = 0;
+        while ((c = getchar()) != EOF) {
+          if (prev == '*' && c == '/')
             break;
-          else
-            ungetch(c);
+          prev = c;
         }
+        continue;
+      } else if (next == '/') {
+        while ((c = getchar()) != EOF && c != '\n')
+          ;
+        continue;
+      } else {
+        ungetc(next, stdin);
       }
-      return getword(word, lim);
-    } else if (d == '/') {
-      while ((c = getch()) != '\n' && c != EOF)
-        ;
-      return getword(word, lim);
-    } else {
-      ungetch(d);
     }
+
+    if (c == '"' || c == '\'') {
+      int quote = c;
+      while ((c = getchar()) != EOF) {
+        if (c == '\\')
+          getchar();
+        else if (c == quote)
+          break;
+      }
+      continue;
+    }
+    break;
   }
-  if (c == '#') {
-    while ((c = getch()) != '\n' && c != EOF)
-      ;
-    return getword(word, lim);
+
+  if (c == EOF)
+    return EOF;
+
+  *w++ = c;
+  if (!isalpha(c) && c != '_') {
+    *w = '\0';
+    return c;
+  }
+  for (; --lim > 0; w++) {
+    if (!isalnum(*w = getchar()) && *w != '_') {
+      ungetc(*w, stdin);
+      break;
+    }
   }
   *w = '\0';
-  return c;
+  return word[0];
 }
 //-----------------------------------------------------------------
 // treeprint: in-order print of tree p
 void treeprint(struct tnode *p) {
   if (p != NULL) {
     treeprint(p->left);
-    printf("%4d %s\n", p->count, p->word);
+    if (p->match) {
+      printf("%s\n", p->word);
+    }
     treeprint(p->right);
   }
 }
@@ -89,27 +84,33 @@ char *str_dup(char *s) {
   char *p;
 
   p = (char *)malloc(strlen(s) + 1); // + 1 for '\0'
-
+  if (p != NULL)
+    strcpy(p, s);
   return p;
 }
 
 // addtree: add a node with w, at or below p
-struct tnode *addtree(struct tnode *p, char *w) {
+struct tnode *addtree_num(struct tnode *p, char *w, int num, int *found) {
   int cond;
   // a new word has arrived
   if (p == NULL) {
     // make a new node
-    p = talloc();
+    p = (struct tnode *)malloc(sizeof(struct tnode));
     p->word = str_dup(w);
-    p->count = 1;
+    p->match = *found;
     p->left = p->right = NULL;
-  } else if ((cond = strcmp(w, p->word)) == 0)
-    p->count++;      // repeated word
-  else if (cond < 0) // less than into left subtree
-    p->left = addtree(p->left, w);
-  else // greater than into righ subtree
-    p->right = addtree(p->right, w);
-
+  } else if ((cond = strcmp(w, p->word)) == 0) {
+    *found = 1;
+    p->match = 1;
+    if (strncmp(w, p->word, num) == 0) {
+      *found = 1;
+      p->match = 1;
+    }
+    if (cond < 0)
+      p->left = addtree_num(p->left, w, num, found);
+    else
+      p->right = addtree_num(p->right, w, num, found);
+  }
   return p;
 }
 //-----------------------------------------------------------------
