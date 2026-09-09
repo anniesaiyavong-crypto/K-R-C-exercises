@@ -4,7 +4,7 @@
 // tree node
 struct tnode {
   char *word;
-  struct linklist *lines;
+  int count;
   struct tnode *left;
   struct tnode *right;
 };

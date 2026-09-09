@@ -4,36 +4,31 @@
 #include <stdlib.h>
 #include <string.h>
 // prototypes
-int getch(void);
-void ungetch(int c);
 struct linklist *addline(struct linklist *list, int line);
 void printlines(struct linklist *list);
+void tree_to_array(struct tnode *p, struct tnode **list, int *i);
 //-----------------------------------------------------------------
 // getword: get next word or character from input
 int getword(char *word, int lim, int *lineno) {
   int c;
   char *w = word;
-
-  while ((c = getchar()) != EOF) {
-    if (c == '\n') {
-      (*lineno)++;
-    } else if (!isspace(c)) {
-      break;
-    }
-  }
+  // skip space
+  while (isspace(c = getchar()))
+    ;
 
   if (c == EOF)
     return EOF;
 
   *w++ = c;
-  if (!isalpha(c)) {
+
+  if (!isalpha(c) && c != '_') {
     *w = '\0';
     return c;
   }
 
   for (; --lim > 0; w++) {
     c = getchar();
-    if (!isalnum(c)) {
+    if (!isalnum(c) && c != '_') {
       ungetc(c, stdin);
       break;
     }
@@ -42,30 +37,11 @@ int getword(char *word, int lim, int *lineno) {
   *w = '\0';
   return word[0];
 }
-//-----------------------------------------------------------------
-// treeprint: in-order print of tree p
-void treeprint(struct tnode *p) {
-  if (p != NULL) {
-    treeprint(p->left);
-    printf("%-15s ", p->word);
-    printlines(p->lines);
-    printf("\n");
 
-    treeprint(p->right);
-  }
-}
+//-----------------------------------------------------------------
 // talloc: make a tnode
 struct tnode *talloc(void) {
   return (struct tnode *)malloc(sizeof(struct tnode));
-}
-// strdup: make a duplicate of s
-char *str_dup(char *s) {
-  char *p;
-
-  p = (char *)malloc(strlen(s) + 1); // + 1 for '\0'
-  if (p != NULL)
-    strcpy(p, s);
-  return p;
 }
 
 // addtree: add a node with w, at or below p
@@ -75,13 +51,12 @@ struct tnode *addtree(struct tnode *p, char *w, int line) {
   if (p == NULL) {
     // make a new node
     p = (struct tnode *)malloc(sizeof(struct tnode));
-    p->word = str_dup(w);
-    p->lines = NULL;
-    p->lines = addline(p->lines, line);
+    p->word = strdup(w);
+    p->count = 1;
     p->left = p->right = NULL;
 
   } else if ((cond = strcmp(w, p->word)) == 0) // if found a duplicated word
-    p->lines = addline(p->lines, line);
+    p->count++;
   else if (cond < 0)
     p->left = addtree(p->left, w, line);
   else
@@ -101,31 +76,24 @@ struct linklist *addline(struct linklist *list, int line) {
 
   return list;
 }
-int isnoise(char *w) {
-  // noise list
-  static char *noise[] = {"a",  "an",  "and",  "are",  "as", "at",   "be",
-                          "by", "for", "from", "has",  "he", "in",   "is",
-                          "it", "its", "of",   "on",   "or", "that", "the",
-                          "to", "was", "were", "with", NULL};
 
-  char temp[MAXWORD];
-  int i;
-
-  // temporary lower case
-  for (i = 0; w[i] != '\0'; i++)
-    temp[i] = tolower(w[i]);
-  temp[i] = '\0';
-
-  for (i = 0; noise[i] != NULL; i++) {
-    if (strcmp(temp, noise[i]) == 0)
-      return 1;
+void tree_to_array(struct tnode *p, struct tnode **list, int *i) {
+  if (p != NULL) {
+    tree_to_array(p->left, list, i);
+    list[(*i)++] = p;
+    tree_to_array(p->right, list, i);
   }
-  return 0;
 }
-// printlines
-void printlines(struct linklist *list) {
-  while (list != NULL) {
-    printf("%d ", list->lnum);
-    list = list->next;
-  }
+
+int count_nodes(struct tnode *p) {
+  if (p == NULL)
+    return 0;
+  return 1 + count_nodes(p->left) + count_nodes(p->right);
+}
+
+int cmp_node(const void *a, const void *b) {
+  struct tnode *nodeA = *(struct tnode **)a;
+  struct tnode *nodeB = *(struct tnode **)b;
+
+  return nodeB->count - nodeA->count;
 }
