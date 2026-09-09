@@ -1,4 +1,7 @@
 #pragma once
+
+#define HASHSIZE 101
+
 // table entry
 struct nlist {
   struct nlist *next; // next entry in chian
