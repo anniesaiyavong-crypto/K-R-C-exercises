@@ -3,63 +3,41 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+// prototypes
 int getch(void);
 void ungetch(int c);
+struct linklist *addline(struct linklist *list, int line);
+void printlines(struct linklist *list);
 //-----------------------------------------------------------------
 // getword: get next word or character from input
-int getword(char *word, int lim) {
+int getword(char *word, int lim, int *lineno) {
   int c;
   char *w = word;
-  // skip space
+
   while ((c = getchar()) != EOF) {
-    if (isspace(c))
-      continue;
-
-    if (c == '/') {
-      int next = getchar();
-      if (next == '*') {
-        int prev = 0;
-        while ((c = getchar()) != EOF) {
-          if (prev == '*' && c == '/')
-            break;
-          prev = c;
-        }
-        continue;
-      } else if (next == '/') {
-        while ((c = getchar()) != EOF && c != '\n')
-          ;
-        continue;
-      } else {
-        ungetc(next, stdin);
-      }
+    if (c == '\n') {
+      (*lineno)++;
+    } else if (!isspace(c)) {
+      break;
     }
-
-    if (c == '"' || c == '\'') {
-      int quote = c;
-      while ((c = getchar()) != EOF) {
-        if (c == '\\')
-          getchar();
-        else if (c == quote)
-          break;
-      }
-      continue;
-    }
-    break;
   }
 
   if (c == EOF)
     return EOF;
 
   *w++ = c;
-  if (!isalpha(c) && c != '_') {
+  if (!isalpha(c)) {
     *w = '\0';
     return c;
   }
+
   for (; --lim > 0; w++) {
-    if (!isalnum(*w = getchar()) && *w != '_') {
-      ungetc(*w, stdin);
+    c = getchar();
+    if (!isalnum(c)) {
+      ungetc(c, stdin);
       break;
     }
+    *w = c;
   }
   *w = '\0';
   return word[0];
@@ -69,9 +47,10 @@ int getword(char *word, int lim) {
 void treeprint(struct tnode *p) {
   if (p != NULL) {
     treeprint(p->left);
-    if (p->match) {
-      printf("%s\n", p->word);
-    }
+    printf("%-15s ", p->word);
+    printlines(p->lines);
+    printf("\n");
+
     treeprint(p->right);
   }
 }
@@ -90,27 +69,63 @@ char *str_dup(char *s) {
 }
 
 // addtree: add a node with w, at or below p
-struct tnode *addtree_num(struct tnode *p, char *w, int num, int *found) {
+struct tnode *addtree(struct tnode *p, char *w, int line) {
   int cond;
   // a new word has arrived
   if (p == NULL) {
     // make a new node
     p = (struct tnode *)malloc(sizeof(struct tnode));
     p->word = str_dup(w);
-    p->match = *found;
+    p->lines = NULL;
+    p->lines = addline(p->lines, line);
     p->left = p->right = NULL;
-  } else if ((cond = strcmp(w, p->word)) == 0) {
-    *found = 1;
-    p->match = 1;
-    if (strncmp(w, p->word, num) == 0) {
-      *found = 1;
-      p->match = 1;
-    }
-    if (cond < 0)
-      p->left = addtree_num(p->left, w, num, found);
-    else
-      p->right = addtree_num(p->right, w, num, found);
-  }
+
+  } else if ((cond = strcmp(w, p->word)) == 0) // if found a duplicated word
+    p->lines = addline(p->lines, line);
+  else if (cond < 0)
+    p->left = addtree(p->left, w, line);
+  else
+    p->right = addtree(p->right, w, line);
+
   return p;
 }
 //-----------------------------------------------------------------
+struct linklist *addline(struct linklist *list, int line) {
+  if (list == NULL) {
+    list = (struct linklist *)malloc(sizeof(struct linklist));
+    list->lnum = line;
+    list->next = NULL;
+  } else if (list->lnum != line)
+
+    list->next = addline(list->next, line);
+
+  return list;
+}
+int isnoise(char *w) {
+  // noise list
+  static char *noise[] = {"a",  "an",  "and",  "are",  "as", "at",   "be",
+                          "by", "for", "from", "has",  "he", "in",   "is",
+                          "it", "its", "of",   "on",   "or", "that", "the",
+                          "to", "was", "were", "with", NULL};
+
+  char temp[MAXWORD];
+  int i;
+
+  // temporary lower case
+  for (i = 0; w[i] != '\0'; i++)
+    temp[i] = tolower(w[i]);
+  temp[i] = '\0';
+
+  for (i = 0; noise[i] != NULL; i++) {
+    if (strcmp(temp, noise[i]) == 0)
+      return 1;
+  }
+  return 0;
+}
+// printlines
+void printlines(struct linklist *list) {
+  while (list != NULL) {
+    printf("%d ", list->lnum);
+    list = list->next;
+  }
+}
