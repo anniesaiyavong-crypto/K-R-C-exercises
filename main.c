@@ -1,5 +1,4 @@
 #include "common.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 // pointer table
@@ -36,9 +35,36 @@ struct nlist *install(char *name, char *defn) {
     np->next = hashtab[hashval];
     hashtab[hashval] = np;
   } else                    // already there
-    free((void *)np->defn); // free prev defn
+    free((void *)np->defn); // free previous defn
   if ((np->defn = strdup(defn)) == NULL)
     return NULL;
 
   return np;
+}
+// undef: remove name and definition from the table
+int undef(char *s) {
+  struct nlist *np, *prev;
+  unsigned hashval;
+
+  if (s == NULL)
+    return 1;
+
+  hashval = hash(s);
+  prev = NULL;
+  // search loop
+  for (np = hashtab[hashval]; np != NULL; np = np->next) {
+    if (strcmp(s, np->name) == 0) { // found
+      if (prev == NULL)
+        hashtab[hashval] = np->next;
+    } else {
+      prev->next = np->next;
+    }
+
+    free((void *)np->name);
+    free((void *)np->defn);
+    free((void *)np);
+
+    return 0;
+  }
+  return -1;
 }
