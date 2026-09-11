@@ -1,24 +1,30 @@
 #include <ctype.h>
 #include <stdio.h>
-#include <string.h>
 
-int main(int argc, char *argv[]) {
+#define MAXLINE 80
+#define OCTLEN 4
+
+int inc(int pos, int n) {
+  if (pos + n >= MAXLINE) {
+    putchar('\n');
+    return n;
+  }
+  return pos + n;
+}
+int main() {
   int c;
+  int pos = 0;
 
-  char *progname = argv[0];
-  char *p = strrchr(progname, '/');
-  if (p != NULL)
-    progname = p + 1;
-
-  if (strcmp(progname, "lower") == 0) {
-    while ((c = getchar()) != EOF)
-      putchar(tolower(c));
-  } else if (strcmp(progname, "upper") == 0) {
-    while ((c = getchar()) != EOF)
-      putchar(toupper(c));
-  } else {
-    fprintf(stderr, "name unmatch\n");
-    return 1;
+  while ((c = getchar()) != EOF) {
+    if (iscntrl(c) && c != '\n' && c != '\t') {
+      pos = inc(pos, OCTLEN);
+      printf("\\%03o", c);
+    } else if (c == '\n') {
+      putchar('\t');
+    } else {
+      pos = inc(pos, 1);
+      putchar(c);
+    }
   }
   return 0;
 }
